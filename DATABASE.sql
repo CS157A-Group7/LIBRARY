@@ -14,8 +14,7 @@ CREATE TABLE BOOK
 (
  title VARCHAR(50) NOT NULL,
  author VARCHAR(30),
- BookId INT auto_increment,
- ISBN INT,
+ BookId INT,
  Edition VARCHAR(50),
  YearBought INT,
  Category VARCHAR (30),
