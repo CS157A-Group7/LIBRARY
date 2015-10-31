@@ -14,10 +14,10 @@ CREATE TABLE ITEM
  title VARCHAR(50) NOT NULL,
  author VARCHAR(30),
  ItemId INT auto_increment,
- ISBN INT,
+ StandardNumber INT,
  Edition VARCHAR(50),
  LibraryBranchID INT ,
- ItemType CHAR(2),
+ ItemType VARCHAR(50),
  copies int,
  PRIMARY KEY(ItemId),
  FOREIGN KEY ( LibraryBranchID) references LibraryBranch(LibraryBranchID)
