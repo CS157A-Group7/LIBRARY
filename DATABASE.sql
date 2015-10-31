@@ -13,7 +13,7 @@ CREATE TABLE ITEM
 (
  title VARCHAR(50) NOT NULL,
  author VARCHAR(30),
- ItemId INT,
+ ItemId INT auto_increment,
  ISBN INT,
  Edition VARCHAR(50),
  LibraryBranchID INT ,
