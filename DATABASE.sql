@@ -5,6 +5,7 @@ USE LIBRARYS;
 CREATE TABLE LibraryBranch
 ( LibraryBranchID INT auto_increment,
  BranchName INT,
+ Adress VARCHAR(120),
  PRIMARY KEY (LibraryBranchID)
 ) ;
 
