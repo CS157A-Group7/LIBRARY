@@ -4,7 +4,7 @@ USE LIBRARYS;
 
 CREATE TABLE LibraryBranch
 ( LibraryBranchID INT auto_increment,
- BranchName INT,
+ BranchName varchar(120),
  Adress VARCHAR(120),
  PRIMARY KEY (LibraryBranchID)
 ) ;
