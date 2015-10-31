@@ -16,7 +16,6 @@ CREATE TABLE ITEM
  ItemId INT,
  Edition VARCHAR(50),
  YearBought INT,
- Category VARCHAR (30),
  LibraryBranchID INT ,
  ItemType CHAR(2),
  PRIMARY KEY(ItemId),
