@@ -18,7 +18,6 @@ CREATE TABLE ITEM
  Edition VARCHAR(50),
  LibraryBranchID INT ,
  ItemType VARCHAR(50),
- copies int,
  PRIMARY KEY(ItemId),
  FOREIGN KEY ( LibraryBranchID) references LibraryBranch(LibraryBranchID)
  );
