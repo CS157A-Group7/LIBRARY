@@ -11,12 +11,13 @@ CREATE TABLE LibraryBranch
 
 CREATE TABLE ITEM
 (
- title VARCHAR(50) NOT NULL,
+ title VARCHAR(150) NOT NULL,
  author VARCHAR(30),
  ItemId INT auto_increment,
- StandardNumber INT,
+ StandardNumber VARCHAR(50),
  Edition VARCHAR(50),
  LibraryBranchID INT ,
+ copies int,
  ItemType VARCHAR(50),
  PRIMARY KEY(ItemId),
  FOREIGN KEY ( LibraryBranchID) references LibraryBranch(LibraryBranchID)
