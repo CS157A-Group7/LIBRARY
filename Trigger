@@ -1,0 +1,23 @@
+DROP TRIGGER IF EXISTS UpdateTrigger;
+delimiter //
+CREATE TRIGGER UpdateTrigger
+AFTER UPDATE ON item
+FOR EACH ROW
+BEGIN
+UPDATE LOAN SET Itemid = NEW.ItemId
+WHERE ItemId = OLD.ItemId;
+END//
+delimiter ;
+
+DROP TRIGGER IF EXISTS InsertTrigger;
+delimiter //
+CREATE TRIGGER InsertTrigger
+AFTER INSERT ON LOAN
+FOR EACH ROW
+BEGIN
+IF NEW.overdue > 10 THEN
+insert into Loan values (New.LoanId, CURRENT_DATE(), false);
+END IF;
+END;
+//
+delimiter ;
