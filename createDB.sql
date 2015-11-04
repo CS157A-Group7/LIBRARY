@@ -45,8 +45,8 @@ CREATE TABLE `loan` (
 ) ;
 
 CREATE TABLE `rating` (
-  `RatingId` int(11) NOT NULL,
-  `RatingDate` int(11) DEFAULT NULL,
+  `RatingId` int(11) NOT NULL auto_increment,
+  `RatingDate` date DEFAULT NULL,
   `ItemId` int(11) DEFAULT NULL,
   `PersonId` int(11) DEFAULT NULL,
   `Stars` BOOLEAN DEFAULT '0',
