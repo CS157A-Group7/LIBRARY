@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package temp;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -40,7 +40,7 @@ public class catalogReader
 
                   i++;
                   
-                  if(i%5 == 0 && !line.contains("'") && !line.contains("1.")&& !line.contains("2.")&& !line.contains("3.")&& !line.contains("4.")&& !line.contains("5.")&& !line.contains("6.")&& !line.contains("7.")&& !line.contains("8.")&& !line.contains("9."))
+                  if(i%400 == 0 && !line.contains("'") && !line.contains("1.")&& !line.contains("2.")&& !line.contains("3.")&& !line.contains("4.")&& !line.contains("5.")&& !line.contains("6.")&& !line.contains("7.")&& !line.contains("8.")&& !line.contains("9."))
                   {
                       j++;
                 //we have one whole line containing all the required info.
@@ -261,16 +261,16 @@ public class catalogReader
     private static void createQuery(String title, String author, String type,
             String edition, String isbn)
     {
-                   int numberOfBranchOccurences = random.nextInt(5 ) + 1; //a random number between 1-5.
-                   int libraryBranchID[] = new int[numberOfBranchOccurences];//allocate a random number between 1-65.
+                   int numberOfBranchOccurences = random.nextInt(3) + 1; //a random number between 1-3.
+                   int libraryBranchID[] = new int[numberOfBranchOccurences];//allocate a random number between 1-10.
                    int copies[] = new int[numberOfBranchOccurences];//allocate a random number between 1-3.
                   
                    for(int j=0;j<numberOfBranchOccurences;j++)
                    {
-                       int tempRand = random.nextInt(65 ) + 1;
+                       int tempRand = random.nextInt(10 ) + 1;
                        while(contains(libraryBranchID,tempRand))
                        {
-                          tempRand = random.nextInt(65 ) + 1;
+                          tempRand = random.nextInt(10 ) + 1;
                        }
                        libraryBranchID[j] = tempRand;
                        copies[j] = random.nextInt(3 ) + 1;
@@ -292,7 +292,7 @@ public class catalogReader
                             copies[i] + ");"; 
                             System.out.println(query);
                     
-                    total ++;
+                    total++;
                     i++;
                     
                     
