@@ -1,4 +1,3 @@
-
 use library;
 select * from person;
 DROP PROCEDURE IF EXISTS getPersonByName;
@@ -7,16 +6,16 @@ CREATE PROCEDURE getPersonByName(IN uName VARCHAR(50))
 BEGIN
 SELECT *
 FROM person
-WHERE name = uName;
+WHERE uName;
 END//
 DELIMITER ;
 
 CALL getPersonByName('Brandon'); 
 
-select * from loan;
+select * from person;
 Drop table if exists countByLoansMade;
-CREATE TABLE countByLoansMade(A INT PRIMARY KEY, B INT) ;
-INSERT INTO countByLoansMade VALUES (TotalLoansMade);
+CREATE TABLE countByLoansMade(personId INT PRIMARY KEY, TotalLoansMade INT) ;
+INSERT INTO countByLoansMade VALUES (PersonId, TotalLoansMade);
 Drop procedure if exists CommitTest;
 delimiter //
 create procedure CommitTest()
@@ -30,4 +29,3 @@ CALL CommitTest;
 rollback;
 
 select * from countByLoansMade;
-
