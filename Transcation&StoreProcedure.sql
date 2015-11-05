@@ -1,3 +1,6 @@
+
+use library;
+select * from person;
 DROP PROCEDURE IF EXISTS getPersonByName;
 DELIMITER //
 CREATE PROCEDURE getPersonByName(IN uName VARCHAR(50))
@@ -10,6 +13,7 @@ DELIMITER ;
 
 CALL getPersonByName('Brandon'); 
 
+select * from loan;
 Drop table if exists countByLoansMade;
 CREATE TABLE countByLoansMade(A INT PRIMARY KEY, B INT) ;
 INSERT INTO countByLoansMade VALUES (TotalLoansMade);
