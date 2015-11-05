@@ -1,13 +1,14 @@
-DROP PROCEDURE IF EXISTS countByLoansMade;
+DROP PROCEDURE IF EXISTS getPersonByName;
 DELIMITER //
-CREATE PROCEDURE countByLoansMade
-(IN retirementAge INT,OUT total INT)
+CREATE PROCEDURE getPersonByName(IN uName VARCHAR(50))
 BEGIN
-SELECT count(*) INTO TotalLoansMade FROM person
-WHERE TotalLoansMade > 0 ;
-END //
+SELECT *
+FROM person
+WHERE name = uName;
+END//
 DELIMITER ;
-CALL countByLoansMade(10, @result);SELECT @result;
+
+CALL getPersonByName('Brandon'); 
 
 Drop table if exists countByLoansMade;
 CREATE TABLE countByLoansMade(A INT PRIMARY KEY, B INT) ;
@@ -20,7 +21,7 @@ delete from countByLoansMade where TotalLoansMade = 1;end; //
 delimiter ;
 
 START TRANSACTION;
-delete from countByLoansMade where TotalLoansMade = 1;
+delete from countByLoansMade where TotalLoansMade = 2;
 CALL CommitTest;
 rollback;
 
