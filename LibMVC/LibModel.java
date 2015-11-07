@@ -16,7 +16,7 @@ public class LibModel {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "****";
+    static final String PASS = "1433239_Jp";
     
     public LibModel(LibView view){
         this.view = view;

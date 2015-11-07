@@ -59,6 +59,7 @@ public class LibView{
         JTextArea textArea;
         JLabel searchLabel;
         JTextField SearchField;
+        JButton resetSearchTable;
         JButton nameSearch;
         JButton authorSearch;
         JPanel topPanel;
@@ -104,18 +105,21 @@ public class LibView{
             searchButtonPanel = new JPanel();
             searchPanel = new JPanel();
             SearchField = new JTextField("Enter a Book Title/Author ...",20);
+            resetSearchTable = new JButton("Reset");
             nameSearch = new JButton("Name Search");
             authorSearch = new JButton("Author Search");
             scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            search.setLayout(new BorderLayout());
             topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
             searchButtonPanel.setLayout(new BoxLayout(searchButtonPanel,BoxLayout.X_AXIS));
             topPanel.add(SearchField);
             searchButtonPanel.add(nameSearch);
             searchButtonPanel.add(authorSearch);
+            searchButtonPanel.add(resetSearchTable);
             topPanel.add(searchButtonPanel);
             searchPanel.add(scrollPane);
-            search.add(topPanel, BorderLayout.LINE_START);
+            search.add(topPanel, BorderLayout.NORTH);
             search.add(searchPanel, BorderLayout.CENTER);
         }
 //        Set Account Tab
@@ -138,7 +142,7 @@ public class LibView{
             scrollPane = new JScrollPane(itemTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             searchPanel.add(scrollPane);
-            searchPanel.repaint();
+            this.repaint();
             this.pack();
             
             
@@ -146,6 +150,7 @@ public class LibView{
         
         void addUpdateInfoListener(ActionListener al){submit.addActionListener(al);}
         
+        void addResetSearchListener(ActionListener al){resetSearchTable.addActionListener(al);}
         void addNameSearchListener(ActionListener al){nameSearch.addActionListener(al);}
         void addCatSearchListener(ActionListener al){authorSearch.addActionListener(al);}
     }
@@ -161,7 +166,9 @@ public class LibView{
         JPanel addP;
         JLabel addL;
         JTextField addUnameF;
+        JLabel addTypeL;
         JComboBox addTypeCB;
+        JLabel addPBL;
         JComboBox addPrefBranchCB;
         
         JButton addUser;
@@ -185,9 +192,11 @@ public class LibView{
             
             bottomP = new JPanel();
             addP = new JPanel();
-            addL = new JLabel("Add User");
-            addUnameF = new JTextField ("User Name", 10);
+            addL = new JLabel("Add User:");
+            addUnameF = new JTextField ("User Name...", 10);
+            addTypeL = new JLabel("Status:");
             addTypeCB = new JComboBox(UserStates);
+            addPBL = new JLabel("Library:");
             addPrefBranchCB = new  JComboBox(LibStates);
             delP = new JPanel();
             delL = new JLabel("Detete User");
@@ -206,7 +215,9 @@ public class LibView{
                 delUser = new JButton("Delete User");
                 addP.add(addL);
                 addP.add(addUnameF);
+                addP.add(addTypeL);
                 addP.add(addTypeCB);
+                addP.add(addPBL);
                 addP.add(addPrefBranchCB);
                 addP.add(addUser);
                 delP.add(delL);
@@ -234,7 +245,7 @@ public class LibView{
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             scrollPane.setSize(650, 200); 
             userTabelP.add(scrollPane, BorderLayout.CENTER);
-            userTabelP.repaint();
+            this.repaint();
             
         }
         

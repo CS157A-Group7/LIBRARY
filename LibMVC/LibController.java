@@ -34,6 +34,7 @@ public class LibController {
 //          AcountAL
             view.user.addUpdateInfoListener(new UpdateInfoEL());
 //          SearchAL
+            view.user.addResetSearchListener(new ResetSearchEL());
             view.user.addNameSearchListener(new NameSearchEL());
             view.user.addCatSearchListener(new AuthorSearchEL());
     }
@@ -91,6 +92,15 @@ public class LibController {
     class UpdateInfoEL implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.out.println("Update Info");
+        }
+    }
+    class ResetSearchEL implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            System.out.println("Name Search");
+            model.itemModel = model.GenTableModel("item");
+            model.itemModel.fireTableDataChanged();
+            view.user.setUserItemTable(model.itemModel);
+            view.user.scrollPane.repaint();
         }
     }
     class NameSearchEL implements ActionListener{
