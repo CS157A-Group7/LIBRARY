@@ -8,20 +8,15 @@ Then, add the number of copies together to find the total number of copies the w
 
 
 DROP PROCEDURE IF EXISTS FindNumberOfCopies;
-DELIMITER $$
-CREATE PROCEDURE FindNumberOfCopies
-( 
- IN itemTitle varchar(150)
-)
+DELIMITER //
+CREATE PROCEDURE FindNumberOfCopies ( IN itemTitle varchar(150), OUT result int(11))
 BEGIN
-    SELECT copies FROM item WHERE title = itemTitle;
-
-    UPDATE item SET copies = newCopies where title = itemTitle;
-END
-$$
+ select sum(copies) into result from item where title = itemTitle;
+END //
 DELIMITER ;
 
-
+call FindNumberOfCopies( 'Maybe', @result);
+select @result;
 
 
 
