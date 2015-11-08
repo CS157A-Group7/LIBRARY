@@ -16,7 +16,7 @@ public class LibModel {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "1433239_Jp";
+    static final String PASS = "********";
     
     public LibModel(LibView view){
         this.view = view;
@@ -36,11 +36,11 @@ public class LibModel {
             stmt = conn.createStatement();
             System.out.println(  "SELECT " + col +
                                     " FROM " + table +
-                                    " WHERE " + where + " = '" + searchParam +"'");
+                                    " WHERE " + where + " = '%" + searchParam +"%'");
             ResultSet rs = 
                 stmt.executeQuery(  "SELECT " + col +
                                     " FROM " + table +
-                                    " WHERE " + where + " = '" + searchParam +"'");
+                                    " WHERE " + where + " LIKE '%" + searchParam +"%'");
             
             int rowcount = 0;
                 if (rs.last()) {

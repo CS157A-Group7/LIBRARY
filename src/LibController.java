@@ -37,6 +37,7 @@ public class LibController {
             view.user.addResetSearchListener(new ResetSearchEL());
             view.user.addNameSearchListener(new NameSearchEL());
             view.user.addCatSearchListener(new AuthorSearchEL());
+            view.user.addCategorySearchListener(new CategorySearchEL());
     }
     
 //    Login Listeners
@@ -120,6 +121,18 @@ public class LibController {
             String searchParam = view.user.SearchField.getText();
             System.out.println(searchParam);
             model.itemModel = model.Search(searchParam, "item", "*", "author", model.itemModel);
+            model.itemModel.fireTableDataChanged();
+            view.user.setUserItemTable(model.itemModel);
+            view.user.scrollPane.repaint();
+        }
+    }
+    
+    class CategorySearchEL implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            System.out.println("Category Search");
+            String searchParam = view.user.SearchField.getText();
+            System.out.println(searchParam);
+            model.itemModel = model.Search(searchParam, "item", "*", "itemtype", model.itemModel);
             model.itemModel.fireTableDataChanged();
             view.user.setUserItemTable(model.itemModel);
             view.user.scrollPane.repaint();

@@ -62,6 +62,7 @@ public class LibView{
         JButton resetSearchTable;
         JButton nameSearch;
         JButton authorSearch;
+        JButton categorySearch;
         JPanel topPanel;
         JPanel searchButtonPanel;
         JPanel searchPanel;
@@ -73,7 +74,7 @@ public class LibView{
             account = new JPanel();
             search = new JPanel();
             
-            tabbedPane.addTab("Acount", new ImageIcon(), account, "Account");
+            tabbedPane.addTab("Account", new ImageIcon(), account, "Account");
             tabbedPane.addTab("Search", new ImageIcon(), search, "Book Search");
 
 //          Account Tab
@@ -108,6 +109,7 @@ public class LibView{
             resetSearchTable = new JButton("Reset");
             nameSearch = new JButton("Name Search");
             authorSearch = new JButton("Author Search");
+            categorySearch = new JButton("Category Search");
             scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             search.setLayout(new BorderLayout());
@@ -116,6 +118,7 @@ public class LibView{
             topPanel.add(SearchField);
             searchButtonPanel.add(nameSearch);
             searchButtonPanel.add(authorSearch);
+            searchButtonPanel.add(categorySearch);
             searchButtonPanel.add(resetSearchTable);
             topPanel.add(searchButtonPanel);
             searchPanel.add(scrollPane);
@@ -153,6 +156,7 @@ public class LibView{
         void addResetSearchListener(ActionListener al){resetSearchTable.addActionListener(al);}
         void addNameSearchListener(ActionListener al){nameSearch.addActionListener(al);}
         void addCatSearchListener(ActionListener al){authorSearch.addActionListener(al);}
+        void addCategorySearchListener(ActionListener al){categorySearch.addActionListener(al);}
     }
     
     class AdminView extends mainView {
