@@ -25,7 +25,7 @@ DELIMITER ;
 
 
 
-/*use library;
+use library;
 select * from person;
 DROP PROCEDURE IF EXISTS getPersonByName;
 DELIMITER //
@@ -55,4 +55,4 @@ delete from countByLoansMade where TotalLoansMade = 2;
 CALL CommitTest;
 rollback;
 
-select * from countByLoansMade;*/
+select * from countByLoansMade;
