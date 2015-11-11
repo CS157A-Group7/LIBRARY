@@ -3,7 +3,7 @@
 Use Library;
 DROP PROCEDURE IF EXISTS UpdateBranchInfo;
 DELIMITER //
-CREATE PROCEDURE UpdateBranchInfo ( IN BranchInfo int, uName varchar(150), PersonId int, out result int)
+CREATE PROCEDURE UpdateBranchInfo ( IN BranchInfo int, uName varchar(150), PersonId int)
 BEGIN
 START TRANSACTION;
 	UPDATE person SET PreferredBranch =  BranchInfo Where uNAME= person.uNAME or personId = person.personId;
@@ -13,6 +13,6 @@ DELIMITER ;
 #UPDATE person SET PreferredBranch =  5 Where uNAME= 'Anne';
 
 
-call UpdateBranchInfo(8, 'Anne',null, @result);
+call UpdateBranchInfo(9, 'Anne',null);
 
-select @result;
+select uNAME, PreferredBranch from person;
