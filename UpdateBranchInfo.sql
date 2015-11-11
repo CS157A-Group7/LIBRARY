@@ -1,8 +1,5 @@
 -- Users shall be able to update information. [preferred branch] - 11/14
 
-
-
-
 DROP PROCEDURE IF EXISTS UpdateBranchInfo;
 DELIMITER //
 CREATE PROCEDURE UpdateBranchInfo ( IN BranchInfo int)
