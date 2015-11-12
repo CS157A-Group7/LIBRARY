@@ -46,14 +46,16 @@ public class LibController {
             String param = view.login.textBox.getText();
             
 //            model.loginModel.Authenticate(param);
-            
-            if(param.toLowerCase().compareTo("admin") == 0){
+            model.login(param);
+            view.user.SetAccount(Integer.toString(model.user.userID), model.user.userName, 
+                    model.getBranch(model.user.preferredBranch), model.getLibraries());
+            if(model.user.userType.compareTo("A") == 0){
                 
                 adminState = true;
                 view.admin.setVisible(true);
                 view.login.setVisible(false);
             }
-            else if(param.toLowerCase().compareTo("user") == 0){
+            else if(model.user.userType.compareTo("U") == 0){
                 adminState = false;
                 view.user.setVisible(true);
                 view.login.setVisible(false);

@@ -131,7 +131,7 @@ public class LibView{
             this.idF.setText(id);
             this.nameF.setText(name);
             this.libCB.removeAllItems();
-            this.libCB.addItem(libraries);
+            this.libCB.setModel(new DefaultComboBoxModel(libraries));
             this.libCB.insertItemAt(preferedLib, 0);
             this.repaint();
         }
