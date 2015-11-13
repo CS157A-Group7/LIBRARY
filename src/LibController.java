@@ -50,12 +50,13 @@ public class LibController {
             view.user.SetAccount(Integer.toString(model.user.userID), model.user.userName, 
                     model.getBranch(model.user.preferredBranch), model.getLibraries());
             if(model.user.userType.compareTo("A") == 0){
-                
+                System.out.println("Welcome " + model.user.userName);
                 adminState = true;
                 view.admin.setVisible(true);
                 view.login.setVisible(false);
             }
             else if(model.user.userType.compareTo("U") == 0){
+                System.out.println("Welcome " + model.user.userName);
                 adminState = false;
                 view.user.setVisible(true);
                 view.login.setVisible(false);
@@ -94,7 +95,13 @@ public class LibController {
 //      User Listeners
     class UpdateInfoEL implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            System.out.println("Update Info");
+            System.out.println("Updating preferred branch");
+            String newLib = (String)view.user.libCB.getSelectedItem();
+            System.out.println(newLib);
+            model.itemModel = model.updateUserBranch(view.user.idF.getText(),newLib);
+            model.itemModel.fireTableDataChanged();
+            view.user.setUserItemTable(model.itemModel);
+            view.user.scrollPane.repaint();
         }
     }
     class ResetSearchEL implements ActionListener{

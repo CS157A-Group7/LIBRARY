@@ -19,7 +19,7 @@ public class LibModel {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "1433239_Jp";
+    static final String PASS = "";
     
     public LibModel(LibView view){
         this.view = view;
@@ -256,7 +256,7 @@ public class LibModel {
     }
 //  ADMIN
 //    insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Jake','A',10,0);
-    public DefaultTableModel addUser(String uname, String usertype, String prefBranch, String loans){
+    public DefaultTableModel  addUser(String uname, String usertype, String prefBranch, String loans){
         Connection conn = null;
         Statement stmt = null;
         String sqlInsert = "insert into person(uname,usertype,preferredbranch,totalLoansMade) values('" + 
@@ -326,6 +326,49 @@ public class LibModel {
         }
         return null;
     }
+     
+     //Updates a user's information.
+     public DefaultTableModel updateUserBranch(String uID,String newLib){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+       
+        String sqlUpdate = "update person set PreferredBranch= (select libraryBranchID from librarybranch where BranchName=?) where person.PersonId = ?";
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.prepareStatement(sqlUpdate);
+            
+            stmt.setString(1, newLib);
+            stmt.setInt(2, Integer.parseInt(uID));
+            System.out.println(stmt);
+            stmt.executeUpdate();
+            ResultSet rs = stmt.executeQuery("SELECT * from person" );
+            return buildTableModel(rs);
+           
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+           //Handle errors for Class.forName
+           e.printStackTrace();
+        }finally{
+           //finally block used to close resources
+           try{
+              if(stmt!=null)
+                 stmt.close();
+           }catch(SQLException se2){
+            }
+            try{
+               if(conn!=null)
+                  conn.close();
+            }catch(SQLException se){
+               se.printStackTrace();
+            }
+        }
+        return null;
+    }
+     
+     
+     
     
 // TABLE MODEL GENERATION
     public DefaultTableModel GenTableModel(String table){
@@ -360,6 +403,8 @@ public class LibModel {
         
         return tableModel;
     }  
+    
+    
     
     public static DefaultTableModel buildTableModel(ResultSet rs)
         throws SQLException {
