@@ -63,8 +63,11 @@ public class LibView{
         JButton nameSearch;
         JButton authorSearch;
         JButton categorySearch;
+        JButton popSearch;
+        JButton ratingSearch;
         JPanel topPanel;
         JPanel searchButtonPanel;
+        JPanel byRatingPanel;
         JPanel searchPanel;
  
         public UserView(){
@@ -104,23 +107,32 @@ public class LibView{
 //          Search Tab
             topPanel = new JPanel();
             searchButtonPanel = new JPanel();
+            byRatingPanel = new JPanel();
             searchPanel = new JPanel();
             SearchField = new JTextField("Enter a Book Title/Author ...",20);
             resetSearchTable = new JButton("Reset");
             nameSearch = new JButton("Name Search");
             authorSearch = new JButton("Author Search");
             categorySearch = new JButton("Category Search");
+            popSearch = new JButton("Most Popular");
+            ratingSearch = new JButton("Highest Rated");
             scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             search.setLayout(new BorderLayout());
             topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
             searchButtonPanel.setLayout(new BoxLayout(searchButtonPanel,BoxLayout.X_AXIS));
+//            searchButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            byRatingPanel.setLayout(new BoxLayout(byRatingPanel,BoxLayout.X_AXIS));
+//            byRatingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             topPanel.add(SearchField);
             searchButtonPanel.add(nameSearch);
             searchButtonPanel.add(authorSearch);
             searchButtonPanel.add(categorySearch);
             searchButtonPanel.add(resetSearchTable);
+            byRatingPanel.add(popSearch);
+            byRatingPanel.add(ratingSearch);
             topPanel.add(searchButtonPanel);
+            topPanel.add(byRatingPanel);
             searchPanel.add(scrollPane);
             search.add(topPanel, BorderLayout.NORTH);
             search.add(searchPanel, BorderLayout.CENTER);
@@ -151,12 +163,13 @@ public class LibView{
             
         }
         
-        void addUpdateInfoListener(ActionListener al){submit.addActionListener(al);}
-        
+        void addUpdateInfoListener(ActionListener al){submit.addActionListener(al);}  
         void addResetSearchListener(ActionListener al){resetSearchTable.addActionListener(al);}
         void addNameSearchListener(ActionListener al){nameSearch.addActionListener(al);}
         void addCatSearchListener(ActionListener al){authorSearch.addActionListener(al);}
         void addCategorySearchListener(ActionListener al){categorySearch.addActionListener(al);}
+        void addPopularSearchListener(ActionListener al){popSearch.addActionListener(al);}
+        void addRatingSearchListener(ActionListener al){ratingSearch.addActionListener(al);}
     }
     
     class AdminView extends mainView {
@@ -182,6 +195,11 @@ public class LibView{
         JTextField delF;
         JTable  userTable;
         JScrollPane scrollPane;
+        JPanel statP;
+        JButton overdueUser;
+        JButton ratingUser;
+        JButton loansLib;
+        JButton resetButton;
         
         public AdminView(){
             super();
@@ -205,18 +223,25 @@ public class LibView{
             delP = new JPanel();
             delL = new JLabel("Detete User");
             delF = new JTextField("User ID" , 10);
+            statP = new JPanel();
             userTabelP = new JPanel();
             scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            bottomP.setLayout(new GridLayout(2,1));
+            bottomP.setLayout(new GridLayout(3,1));
             addP.setLayout(new FlowLayout());
             addP.setAlignmentX(FlowLayout.TRAILING);
             delP.setLayout(new FlowLayout());
             delP.setAlignmentX(FlowLayout.TRAILING);
+            statP.setLayout(new FlowLayout());
+            statP.setAlignmentX(FlowLayout.TRAILING);
 
 //              ButtonPanel
                 addUser = new JButton("Add User");
                 delUser = new JButton("Delete User");
+                overdueUser = new JButton("Overdue Users");
+                ratingUser  = new JButton("Higher Ratings");
+                loansLib = new JButton("Loans Per Library");
+                resetButton = new JButton("Reset");
                 addP.add(addL);
                 addP.add(addUnameF);
                 addP.add(addTypeL);
@@ -227,8 +252,13 @@ public class LibView{
                 delP.add(delL);
                 delP.add(delF);
                 delP.add(delUser);
+                statP.add(overdueUser);
+                statP.add(ratingUser);
+                statP.add(loansLib);
+                statP.add(resetButton);
                 bottomP.add(addP);
                 bottomP.add(delP);
+                bottomP.add(statP);
                 userTabelP.add(scrollPane);
                 
             userP.add(userTabelP, BorderLayout.CENTER);
@@ -255,6 +285,10 @@ public class LibView{
         
         void addAddUserListener(ActionListener al){addUser.addActionListener(al);}
         void addDelUserListener(ActionListener al){delUser.addActionListener(al);}
+        void addOverdueUserListener(ActionListener al){overdueUser.addActionListener(al);}
+        void addRatingUserListener(ActionListener al){ratingUser.addActionListener(al);}
+        void addLPLListener(ActionListener al){loansLib.addActionListener(al);}
+        void addResetUserListener(ActionListener al){resetButton.addActionListener(al);}
         
     }
     

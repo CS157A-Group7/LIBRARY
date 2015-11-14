@@ -19,7 +19,7 @@ public class LibModel {
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "";
+    static final String PASS = "1433239_Jp";
     
     public LibModel(LibView view){
         this.view = view;
@@ -254,6 +254,45 @@ public class LibModel {
         }
         return null;
     }
+    
+    public DefaultTableModel DefaultItemSearch(String sql){
+        
+        Connection conn = null;
+        Statement stmt = null;
+        
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            return buildTableModel(rs);
+           
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+           //Handle errors for Class.forName
+           e.printStackTrace();
+        }finally{
+           //finally block used to close resources
+           try{
+              if(stmt!=null)
+                 stmt.close();
+           }catch(SQLException se2){
+            }
+            try{
+               if(conn!=null)
+                  conn.close();
+            }catch(SQLException se){
+               se.printStackTrace();
+            }
+        }
+        
+        return null;
+    }
+    
 //  ADMIN
 //    insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Jake','A',10,0);
     public DefaultTableModel  addUser(String uname, String usertype, String prefBranch, String loans){
@@ -292,7 +331,7 @@ public class LibModel {
         return null;
     }
     
-     public DefaultTableModel delUser(String uID){
+    public DefaultTableModel delUser(String uID){
         Connection conn = null;
         Statement stmt = null;
         String sqlDelete = "DELETE FROM person where PersonId = '" + uID + "'";
@@ -326,7 +365,48 @@ public class LibModel {
         }
         return null;
     }
-     
+    
+     public DefaultTableModel DefualtUserSearch(String sql){
+        Connection conn = null;
+        Statement stmt = null;
+        try{
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            int rowcount = 0;
+                if (rs.last()) {
+                  rowcount = rs.getRow();
+                  rs.beforeFirst(); 
+                }
+                System.out.println("" + rowcount);
+            
+            return buildTableModel(rs);
+           
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+           //Handle errors for Class.forName
+           e.printStackTrace();
+        }finally{
+           //finally block used to close resources
+           try{
+              if(stmt!=null)
+                 stmt.close();
+           }catch(SQLException se2){
+            }
+            try{
+               if(conn!=null)
+                  conn.close();
+            }catch(SQLException se){
+               se.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
      //Updates a user's information.
      public DefaultTableModel updateUserBranch(String uID,String newLib){
         Connection conn = null;
