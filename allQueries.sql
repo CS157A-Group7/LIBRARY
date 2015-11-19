@@ -51,3 +51,29 @@ where libraryBranchID=(select librarybranchid from libraryBranch where branchnam
 
 -- Users shall be able to update information. [preferred branch] - 11/14
 update person set PreferredBranch= (select libraryBranchID from librarybranch where BranchName=?) where person.PersonId = "?";
+
+/*User shall be able to rent a new book (Display books on for the library) .- [11/21] BY*/
+Use library;
+update item set copies = copies -1 where item.ItemId = ?; -- if user rent a new book from library, it should defaut = 0, and it should NOT BE null
+update person set TotalLoansMade = TotalLoansMade + 1 where personId = ?;
+insert into loan SET pid = ?, ItemId = ?, loandate = '?',
+overdue = false ON DUPLICATE KEY UPDATE ItemId = ?, loandate = '?',overdue = false;
+
+
+
+/*Users shall be able to request a book 
+from another branch if it is not there in there in the preferred branch  [11/21] BY*/
+USE LIBRARY;
+update item set copies = copies -1 where item.ItemId = ?; -- if user rent a new book from library, it should defaut = 0, and it should be null
+update person set TotalLoansMade = TotalLoansMade + 1 where personId = ?;
+INSERT INTO LOAN SET PID = ?, ItemId = ( SELECT ITEMID FROM ITEM WHERE item.ItemId= ? and  COPIES >= 1), 
+loanDate = '?', OVERDUE = FALSE; 
+--It is not necessary to define differnt preferrend branch in the loan table, but all item source should share.
+
+/*Users shall be able to return a book.- [11/21] BY*/
+use library;
+
+update item set copies = copies +1 where item.ItemId = ?;
+update person set TotalLoansMade = TotalLoansMade - 1 where personId = ?;
+delete from loan where loan.Itemid = ?;
+
