@@ -2,6 +2,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,7 +32,7 @@ public class LibController {
         view.admin.addAddUserListener(new AddUserEL());
         view.admin.addDelUserListener(new DelUserEL());
         view.admin.addOverdueUserListener(new OverdueUserEL());
-        view.admin.addRatingUserListener(new DoubleRaingUserEL());
+        view.admin.addRatingTwiceListener(new DoubleRatingUserEL());
         view.admin.addLPLListener(new LPLEL());
         view.admin.addResetUserListener(new ResetUserEL());
         
@@ -45,6 +46,8 @@ public class LibController {
             view.user.addCategorySearchListener(new CategorySearchEL());
             view.user.addPopularSearchListener(new PopularSearchEL());
             view.user.addRatingSearchListener(new RatingSearchEL());
+            view.user.addSameAuthorListener(new SameAuthorSearchEL());
+            
     }
     
 //    Login Listeners
@@ -113,10 +116,10 @@ public class LibController {
             view.admin.scrollPane.repaint();
         }
     }
-    class DoubleRaingUserEL implements ActionListener{
+    class DoubleRatingUserEL implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            System.out.println("Users Who Double Rated");
-            String sql =    "select * " +
+            System.out.println("Users Who gave a higher rating the second time.");
+            String sql =    "select r1.personid,i1.title,i1.author,i1.edition,r1.ratingdate,r1.stars,r2.ratingdate,r2.stars " +
                             "from rating r1 join rating r2 on r1.personid=R2.PERSONID " + 
                             "join Item i1 on i1.itemid=r1.itemid " + 
                             "join item i2 on i2.itemid=r2.itemid " +
@@ -201,6 +204,18 @@ public class LibController {
             String searchParam = view.user.SearchField.getText();
             System.out.println(searchParam);
             model.itemModel = model.Search(searchParam, "item", "*", "itemtype", model.itemModel);
+            model.itemModel.fireTableDataChanged();
+            view.user.setUserItemTable(model.itemModel);
+            view.user.scrollPane.repaint();
+        }
+    }
+    
+        class SameAuthorSearchEL implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            System.out.println("Others books by this author");
+            String searchParam = view.user.SearchField.getText();
+            System.out.println(searchParam);
+            model.itemModel = model.SearchBooksBySameAuthor(searchParam, model.itemModel);
             model.itemModel.fireTableDataChanged();
             view.user.setUserItemTable(model.itemModel);
             view.user.scrollPane.repaint();

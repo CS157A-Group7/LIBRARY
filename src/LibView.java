@@ -65,6 +65,8 @@ public class LibView{
         JButton categorySearch;
         JButton popSearch;
         JButton ratingSearch;
+        JButton ratedHigher;
+        JButton sameAuthor;
         JPanel topPanel;
         JPanel searchButtonPanel;
         JPanel byRatingPanel;
@@ -116,6 +118,7 @@ public class LibView{
             categorySearch = new JButton("Category Search");
             popSearch = new JButton("Most Popular");
             ratingSearch = new JButton("Highest Rated");
+            sameAuthor = new JButton("Other books by same author");
             scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             search.setLayout(new BorderLayout());
@@ -131,6 +134,7 @@ public class LibView{
             searchButtonPanel.add(resetSearchTable);
             byRatingPanel.add(popSearch);
             byRatingPanel.add(ratingSearch);
+             byRatingPanel.add(sameAuthor); 
             topPanel.add(searchButtonPanel);
             topPanel.add(byRatingPanel);
             searchPanel.add(scrollPane);
@@ -170,6 +174,8 @@ public class LibView{
         void addCategorySearchListener(ActionListener al){categorySearch.addActionListener(al);}
         void addPopularSearchListener(ActionListener al){popSearch.addActionListener(al);}
         void addRatingSearchListener(ActionListener al){ratingSearch.addActionListener(al);}
+        void addSameAuthorListener(ActionListener al){sameAuthor.addActionListener(al);}
+        
     }
     
     class AdminView extends mainView {
@@ -240,6 +246,7 @@ public class LibView{
                 delUser = new JButton("Delete User");
                 overdueUser = new JButton("Overdue Users");
                 ratingUser  = new JButton("Higher Ratings");
+                
                 loansLib = new JButton("Loans Per Library");
                 resetButton = new JButton("Reset");
                 addP.add(addL);
@@ -286,7 +293,7 @@ public class LibView{
         void addAddUserListener(ActionListener al){addUser.addActionListener(al);}
         void addDelUserListener(ActionListener al){delUser.addActionListener(al);}
         void addOverdueUserListener(ActionListener al){overdueUser.addActionListener(al);}
-        void addRatingUserListener(ActionListener al){ratingUser.addActionListener(al);}
+        void addRatingTwiceListener(ActionListener al){ratingUser.addActionListener(al);}
         void addLPLListener(ActionListener al){loansLib.addActionListener(al);}
         void addResetUserListener(ActionListener al){resetButton.addActionListener(al);}
         
