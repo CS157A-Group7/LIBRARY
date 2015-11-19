@@ -64,7 +64,7 @@ overdue = false ON DUPLICATE KEY UPDATE ItemId = ?, loandate = '?',overdue = fal
 /*Users shall be able to request a book 
 from another branch if it is not there in there in the preferred branch  [11/21] BY*/
 USE LIBRARY;
-update item set copies = copies -1 where item.ItemId = ?; -- if user rent a new book from library, it should defaut = 0, and it should be null
+update item set copies = (select copies from item where item.copies >= 1) - 1 where item.ItemId = ?; -- if user rent a new book from library, it should defaut = 0, and it should be null
 update person set TotalLoansMade = TotalLoansMade + 1 where personId = ?;
 INSERT INTO LOAN SET PID = ?, ItemId = ( SELECT ITEMID FROM ITEM WHERE item.ItemId= ? and  COPIES >= 1), 
 loanDate = '?', OVERDUE = FALSE; 
