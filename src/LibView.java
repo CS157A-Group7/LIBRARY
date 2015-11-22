@@ -49,7 +49,7 @@ public class LibView{
         JLabel libL;
         JTextField idF;
         JTextField nameF;
-        JComboBox libCB;
+        JComboBox userLibCB;
         JButton submit;
         
 //      Search Tab Var
@@ -59,6 +59,7 @@ public class LibView{
         JTextArea textArea;
         JLabel searchLabel;
         JTextField SearchField;
+        
         JButton resetSearchTable;
         JButton nameSearch;
         JButton authorSearch;
@@ -67,10 +68,21 @@ public class LibView{
         JButton ratingSearch;
         JButton ratedHigher;
         JButton sameAuthor;
+        JButton multiSearchButton;
+        
+        JComboBox authorsCB;
+        JComboBox catsCB;
+        
         JPanel topPanel;
+//      TopPanel Panels
         JPanel searchButtonPanel;
         JPanel byRatingPanel;
+        JPanel multiSearchPanel;
         JPanel searchPanel;
+//            NEW
+              JPanel titlePanel;
+              JPanel authorPanel;
+              JPanel categoryPanel;
  
         public UserView(){
             super();
@@ -82,7 +94,7 @@ public class LibView{
             tabbedPane.addTab("Account", new ImageIcon(), account, "Account");
             tabbedPane.addTab("Search", new ImageIcon(), search, "Book Search");
 
-//          Account Tab
+//      Account Tab
 
             account.setLayout(new GridLayout(7,1,2,4));
             idL = new JLabel("User ID:");
@@ -94,24 +106,32 @@ public class LibView{
             idF = new JTextField("ID",20);
             idF.setEditable(false);
             nameF = new JTextField("name",20);
-            libCB = new JComboBox();
+            userLibCB = new JComboBox();
             submit = new JButton("Update");
             account.add(idL);
             account.add(idF);
             account.add(nameL);
             account.add(nameF);
             account.add(libL);
-            account.add(libCB);
+            account.add(userLibCB);
 //            account.add(new JPanel());
             account.add(submit);
             
+//      Search Tab
 
-//          Search Tab
+//          PANELS
             topPanel = new JPanel();
             searchButtonPanel = new JPanel();
             byRatingPanel = new JPanel();
             searchPanel = new JPanel();
-            SearchField = new JTextField("Enter a Book Title/Author ...",20);
+            multiSearchPanel = new JPanel();
+            
+            titlePanel = new JPanel();
+            authorPanel = new JPanel();
+            categoryPanel = new JPanel();
+            
+//          LABELs AND BUTTONS
+            SearchField = new JTextField("Search Title...",20);
             resetSearchTable = new JButton("Reset");
             nameSearch = new JButton("Name Search");
             authorSearch = new JButton("Author Search");
@@ -119,6 +139,11 @@ public class LibView{
             popSearch = new JButton("Most Popular");
             ratingSearch = new JButton("Highest Rated");
             sameAuthor = new JButton("Other books by same author");
+            multiSearchButton = new JButton("Multi-Search");
+//          COMBOBOX
+            authorsCB = new JComboBox();
+            catsCB = new JComboBox();
+//          FORMATING
             scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             search.setLayout(new BorderLayout());
@@ -126,29 +151,75 @@ public class LibView{
             searchButtonPanel.setLayout(new BoxLayout(searchButtonPanel,BoxLayout.X_AXIS));
 //            searchButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             byRatingPanel.setLayout(new BoxLayout(byRatingPanel,BoxLayout.X_AXIS));
+            multiSearchPanel.setLayout(new BoxLayout(multiSearchPanel,BoxLayout.X_AXIS));
 //            byRatingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            topPanel.add(SearchField);
-            searchButtonPanel.add(nameSearch);
-            searchButtonPanel.add(authorSearch);
-            searchButtonPanel.add(categorySearch);
+
+            titlePanel.setLayout(new BoxLayout(titlePanel,BoxLayout.X_AXIS));
+            authorPanel.setLayout(new BoxLayout(authorPanel,BoxLayout.X_AXIS));
+            categoryPanel.setLayout(new BoxLayout(categoryPanel,BoxLayout.X_AXIS));
+            
+//          SEARCH FIELD
+//            topPanel.add(SearchField);
+            
+//              NEW Title Panel
+                titlePanel.add(SearchField);
+                titlePanel.add(nameSearch);
+//              NEW Author Panel
+                authorPanel.add(authorsCB);
+                authorPanel.add(authorSearch);
+//              NEW Category Panel
+                categoryPanel.add(catsCB);
+                categoryPanel.add(categorySearch);
+            
+//          SEARCH BUTTONS
+//            searchButtonPanel.add(nameSearch);
+//            searchButtonPanel.add(authorSearch);
+//            searchButtonPanel.add(categorySearch);
+            searchButtonPanel.add(multiSearchButton);
             searchButtonPanel.add(resetSearchTable);
+//          RATING BUTTONS  
             byRatingPanel.add(popSearch);
             byRatingPanel.add(ratingSearch);
-             byRatingPanel.add(sameAuthor); 
-            topPanel.add(searchButtonPanel);
+            byRatingPanel.add(sameAuthor); 
+//          MULTI SEARCH
+//            multiSearchPanel.add(authorsCB);
+//            multiSearchPanel.add(catsCB);
+//            multiSearchPanel.add(multiSearchButton);
+//          Button Panel
+//            topPanel.add(multiSearchPanel);
+            topPanel.add(titlePanel);
+            topPanel.add(authorPanel);
+            topPanel.add(categoryPanel);
+            topPanel.add(searchButtonPanel);            
             topPanel.add(byRatingPanel);
+//          TABLE  
             searchPanel.add(scrollPane);
+//          TAB
             search.add(topPanel, BorderLayout.NORTH);
             search.add(searchPanel, BorderLayout.CENTER);
         }
-//        Set Account Tab
+//      Set Account Tab
         public void SetAccount(String id, String name,
                 String preferedLib, String[] libraries){
             this.idF.setText(id);
             this.nameF.setText(name);
-            this.libCB.removeAllItems();
-            this.libCB.setModel(new DefaultComboBoxModel(libraries));
-            this.libCB.insertItemAt(preferedLib, 0);
+            this.userLibCB.removeAllItems();
+            this.userLibCB.setModel(new DefaultComboBoxModel(libraries));
+            this.userLibCB.insertItemAt(preferedLib, 0);
+            this.repaint();
+        }
+//      Set Search Tab
+        public void SetSearchCB(String[] authors, String[] cats){
+//            this.libsCB.setModel(new DefaultComboBoxModel(libs));
+//            this.libsCB.insertItemAt("None", 0);
+            this.authorsCB.setModel(new DefaultComboBoxModel(authors));
+            this.authorsCB.insertItemAt("None", 0);
+//            this.authorsCB.remove(1);
+            this.authorsCB.setSelectedIndex(0);
+            this.catsCB.setModel(new DefaultComboBoxModel(cats));
+            this.catsCB.insertItemAt("None", 0);
+//            this.catsCB.remove(1);
+            this.catsCB.setSelectedIndex(0);
             this.repaint();
         }
         
@@ -175,6 +246,7 @@ public class LibView{
         void addPopularSearchListener(ActionListener al){popSearch.addActionListener(al);}
         void addRatingSearchListener(ActionListener al){ratingSearch.addActionListener(al);}
         void addSameAuthorListener(ActionListener al){sameAuthor.addActionListener(al);}
+        void addMultiSearchListener(ActionListener al){multiSearchButton.addActionListener(al);}
         
     }
     
@@ -334,5 +406,11 @@ public class LibView{
         void addLoginListener(ActionListener al){login.addActionListener(al);}
         
     }
+    
+     public void Error(String str){
+            JFrame warning = new JFrame();
+            JOptionPane.showMessageDialog(warning,
+                    str, "Error", JOptionPane.ERROR_MESSAGE);
+        }
     
 }
