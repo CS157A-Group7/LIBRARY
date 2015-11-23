@@ -90,3 +90,12 @@ insert into rating set ratingdate = '?',itemid = ?,personid = ?,stars =?; -- Str
 
 -- Users can update the rating for a book later. 11/28 BY
 update rating set Stars= ? where RatingId = ?;
+
+/*Users can see a set of “recommended books” which are books that are 
+from the same category or written by the same author as the books that they have loaned. 11/28 BY*/
+
+use library;
+select  Stars , author, title, ItemType
+from rating join item on rating.itemid=Item.itemid
+WHERE author <> 'null'
+order by author;
