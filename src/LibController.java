@@ -48,6 +48,8 @@ public class LibController {
             view.user.addRatingSearchListener(new RatingSearchEL());
             view.user.addSameAuthorListener(new SameAuthorSearchEL());
             view.user.addMultiSearchListener(new MultiSearchEL());
+            view.user.addRentListener(new RentEL());
+            view.user.addReturnListener(new ReturnEL());
             
     }
     
@@ -171,6 +173,18 @@ public class LibController {
          public void actionPerformed(ActionEvent e){
              System.out.println("Multi-Search");
              model.MultiSearch();
+         }
+    }
+    class RentEL implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+            System.out.println("Rent");
+            model.RentItem();
+         }
+    }
+    class ReturnEL implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+            System.out.println("Return");
+            model.ReturnItem();
          }
     }
 }

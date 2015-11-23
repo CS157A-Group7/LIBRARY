@@ -69,6 +69,7 @@ public class LibView{
         JButton ratedHigher;
         JButton sameAuthor;
         JButton multiSearchButton;
+        JButton rent;
         
         JComboBox authorsCB;
         JComboBox catsCB;
@@ -83,6 +84,15 @@ public class LibView{
               JPanel titlePanel;
               JPanel authorPanel;
               JPanel categoryPanel;
+              
+//      Returns
+              
+        JPanel returns;
+        JPanel loanPanel;
+        JTable loanTable;
+        JScrollPane loanScrollPane;
+        JButton returnButton;
+        
  
         public UserView(){
             super();
@@ -90,9 +100,11 @@ public class LibView{
             
             account = new JPanel();
             search = new JPanel();
+            returns = new JPanel();
             
             tabbedPane.addTab("Account", new ImageIcon(), account, "Account");
             tabbedPane.addTab("Search", new ImageIcon(), search, "Book Search");
+            tabbedPane.addTab("Return", new ImageIcon(), returns, "Return Book");
 
 //      Account Tab
 
@@ -106,6 +118,7 @@ public class LibView{
             idF = new JTextField("ID",20);
             idF.setEditable(false);
             nameF = new JTextField("name",20);
+            nameF.setEditable(false);
             userLibCB = new JComboBox();
             submit = new JButton("Update");
             account.add(idL);
@@ -140,6 +153,7 @@ public class LibView{
             ratingSearch = new JButton("Highest Rated");
             sameAuthor = new JButton("Other books by same author");
             multiSearchButton = new JButton("Multi-Search");
+            rent = new JButton("Rent");
 //          COMBOBOX
             authorsCB = new JComboBox();
             catsCB = new JComboBox();
@@ -149,44 +163,30 @@ public class LibView{
             search.setLayout(new BorderLayout());
             topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
             searchButtonPanel.setLayout(new BoxLayout(searchButtonPanel,BoxLayout.X_AXIS));
-//            searchButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             byRatingPanel.setLayout(new BoxLayout(byRatingPanel,BoxLayout.X_AXIS));
             multiSearchPanel.setLayout(new BoxLayout(multiSearchPanel,BoxLayout.X_AXIS));
-//            byRatingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             titlePanel.setLayout(new BoxLayout(titlePanel,BoxLayout.X_AXIS));
             authorPanel.setLayout(new BoxLayout(authorPanel,BoxLayout.X_AXIS));
             categoryPanel.setLayout(new BoxLayout(categoryPanel,BoxLayout.X_AXIS));
             
 //          SEARCH FIELD
-//            topPanel.add(SearchField);
-            
-//              NEW Title Panel
-                titlePanel.add(SearchField);
-                titlePanel.add(nameSearch);
-//              NEW Author Panel
-                authorPanel.add(authorsCB);
-                authorPanel.add(authorSearch);
-//              NEW Category Panel
-                categoryPanel.add(catsCB);
-                categoryPanel.add(categorySearch);
+
+            titlePanel.add(SearchField);
+            titlePanel.add(nameSearch);
+            authorPanel.add(authorsCB);
+            authorPanel.add(authorSearch);
+            categoryPanel.add(catsCB);
+            categoryPanel.add(categorySearch);
             
 //          SEARCH BUTTONS
-//            searchButtonPanel.add(nameSearch);
-//            searchButtonPanel.add(authorSearch);
-//            searchButtonPanel.add(categorySearch);
             searchButtonPanel.add(multiSearchButton);
             searchButtonPanel.add(resetSearchTable);
 //          RATING BUTTONS  
             byRatingPanel.add(popSearch);
             byRatingPanel.add(ratingSearch);
             byRatingPanel.add(sameAuthor); 
-//          MULTI SEARCH
-//            multiSearchPanel.add(authorsCB);
-//            multiSearchPanel.add(catsCB);
-//            multiSearchPanel.add(multiSearchButton);
 //          Button Panel
-//            topPanel.add(multiSearchPanel);
             topPanel.add(titlePanel);
             topPanel.add(authorPanel);
             topPanel.add(categoryPanel);
@@ -197,6 +197,19 @@ public class LibView{
 //          TAB
             search.add(topPanel, BorderLayout.NORTH);
             search.add(searchPanel, BorderLayout.CENTER);
+            search.add(rent, BorderLayout.PAGE_END);
+            
+//          Return Tab
+            loanPanel = new JPanel();
+            returns.setLayout(new BorderLayout());
+            loanTable = new JTable();
+            loanScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            returnButton = new JButton("Return");
+            
+            loanPanel.add(loanScrollPane);
+            returns.add(loanPanel, BorderLayout.CENTER);
+            returns.add(returnButton, BorderLayout.PAGE_END);
         }
 //      Set Account Tab
         public void SetAccount(String id, String name,
@@ -234,8 +247,18 @@ public class LibView{
             searchPanel.add(scrollPane);
             this.repaint();
             this.pack();
-            
-            
+        }
+        //      Call this when you want to update Return Table
+        public void setLoanItemTable(DefaultTableModel itemTableModel){
+            loanPanel.removeAll();
+            loanTable = new JTable(itemTableModel);
+            loanTable.setSize(new Dimension(500, 200));
+            loanTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            loanScrollPane = new JScrollPane(loanTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            loanPanel.add(loanScrollPane);
+            this.repaint();
+            this.pack();
         }
         
         void addUpdateInfoListener(ActionListener al){submit.addActionListener(al);}  
@@ -247,6 +270,8 @@ public class LibView{
         void addRatingSearchListener(ActionListener al){ratingSearch.addActionListener(al);}
         void addSameAuthorListener(ActionListener al){sameAuthor.addActionListener(al);}
         void addMultiSearchListener(ActionListener al){multiSearchButton.addActionListener(al);}
+        void addRentListener(ActionListener al){rent.addActionListener(al);}
+        void addReturnListener(ActionListener al){returnButton.addActionListener(al);}
         
     }
     
