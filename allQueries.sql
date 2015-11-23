@@ -77,3 +77,16 @@ update item set copies = copies +1 where item.ItemId = ?;
 update person set TotalLoansMade = TotalLoansMade - 1 where personId = ?;
 delete from loan where loan.Itemid = ?;
 
+-- Admins shall be able to see all distinct users who have rented a book. _ _ 11/28 BY
+
+use library;
+select distinct title , uNAME 
+from person join loan join item on Loan.itemid=Item.itemid 
+where UserType ='U'
+order by title;
+
+-- Users can rate a book.11/28 BY
+insert into rating set ratingdate = '?',itemid = ?,personid = ?,stars =?; -- Strings, int, int, int
+
+-- Users can update the rating for a book later. 11/28 BY
+update rating set Stars= ? where RatingId = ?;
