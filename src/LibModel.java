@@ -13,6 +13,7 @@ public class LibModel
 
     DefaultTableModel userModel;
     DefaultTableModel itemModel;
+    DefaultTableModel ratingModel;
     DefaultTableModel loanModel;
 
     User user;
@@ -50,6 +51,8 @@ public class LibModel
         this.view.admin.setAdminUserTable(userModel);
         itemModel = GenTableModel("item");
         this.view.user.setUserItemTable(itemModel);
+        ratingModel = RatingTableGen();
+        this.view.user.setRatingItemTable(ratingModel);
         loanModel = LoanTableGen();
         this.view.user.setLoanItemTable(loanModel);
     }
@@ -150,6 +153,8 @@ public class LibModel
                 se.printStackTrace();
             }
         }
+        ratingModel = RatingTableGen();
+        this.view.user.setRatingItemTable(ratingModel);
         loanModel = LoanTableGen();
         this.view.user.setLoanItemTable(loanModel);
     }
@@ -286,6 +291,8 @@ public class LibModel
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
         view.user.SearchField.setText("Search Title...");
+        view.user.authorsCB.setSelectedIndex(0);
+        view.user.catsCB.setSelectedIndex(0);
         view.user.scrollPane.repaint();
     }
     public void NameSearch(){
@@ -388,6 +395,7 @@ public class LibModel
         Connection conn = null;
         int userID = user.userID;
         String itemID = view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 2).toString();
+        int copies = Integer.parseInt(view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 7).toString());
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
         
         PreparedStatement itemStmt = null;
@@ -397,62 +405,66 @@ public class LibModel
         PreparedStatement loanStmt = null;
         String loanSql = "insert into loan SET pid = ?, ItemId = ?, loandate = ?,overdue = false ON DUPLICATE KEY UPDATE ItemId = ?, loandate = ?,overdue = false;"  ;
         
-        try
-        {
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            itemStmt = conn.prepareStatement(itemSql);
-            itemStmt.setInt(1, Integer.parseInt(itemID));
-            System.out.println(itemStmt);
-            itemStmt.executeUpdate();
-            
-            personStmt = conn.prepareStatement(personSql);
-            personStmt.setInt(1, userID);
-            System.out.println(personStmt);
-            personStmt.executeUpdate();
+        if(copies > 0){
+            try
+            {
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                itemStmt = conn.prepareStatement(itemSql);
+                itemStmt.setInt(1, Integer.parseInt(itemID));
+                System.out.println(itemStmt);
+                itemStmt.executeUpdate();
 
-            loanStmt = conn.prepareStatement(loanSql);
-            loanStmt.setInt(1, userID);
-            loanStmt.setInt(2, Integer.parseInt(itemID));
-            loanStmt.setDate(3, date);
-            loanStmt.setInt(4, Integer.parseInt(itemID));
-            loanStmt.setDate(5, date);
-            System.out.println(loanStmt);
-            loanStmt.executeUpdate();
-            
-        } catch (SQLException se){
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e){
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally{
-            //finally block used to close resources
-            try{
-                if (itemStmt != null){
-                    itemStmt.close();
-                }
-                if (personStmt != null){
-                    personStmt.close();
-                }
-            } catch (SQLException se2){
-            }
-            try{
-                if (conn != null){
-                    conn.close();
-                }
+                personStmt = conn.prepareStatement(personSql);
+                personStmt.setInt(1, userID);
+                System.out.println(personStmt);
+                personStmt.executeUpdate();
+
+                loanStmt = conn.prepareStatement(loanSql);
+                loanStmt.setInt(1, userID);
+                loanStmt.setInt(2, Integer.parseInt(itemID));
+                loanStmt.setDate(3, date);
+                loanStmt.setInt(4, Integer.parseInt(itemID));
+                loanStmt.setDate(5, date);
+                System.out.println(loanStmt);
+                loanStmt.executeUpdate();
+
             } catch (SQLException se){
+                //Handle errors for JDBC
                 se.printStackTrace();
-            }
-        }    
-         
-            itemModel = DefaultItemSearch("SELECT * from item");
-            itemModel.fireTableDataChanged();
-            view.user.setUserItemTable(itemModel);
-            view.user.scrollPane.repaint();
-            loanModel = LoanTableGen();
-            loanModel.fireTableDataChanged();
-            view.user.setLoanItemTable(loanModel);
-            view.user.loanScrollPane.repaint();
+            } catch (Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            } finally{
+                //finally block used to close resources
+                try{
+                    if (itemStmt != null){
+                        itemStmt.close();
+                    }
+                    if (personStmt != null){
+                        personStmt.close();
+                    }
+                } catch (SQLException se2){
+                }
+                try{
+                    if (conn != null){
+                        conn.close();
+                    }
+                } catch (SQLException se){
+                    se.printStackTrace();
+                }
+            }    
+        } else {
+            view.Error("No Copies Available");
+        }
+        
+        itemModel = DefaultItemSearch("SELECT * from item");
+        itemModel.fireTableDataChanged();
+        view.user.setUserItemTable(itemModel);
+        view.user.scrollPane.repaint();
+        loanModel = LoanTableGen();
+        loanModel.fireTableDataChanged();
+        view.user.setLoanItemTable(loanModel);
+        view.user.loanScrollPane.repaint();
     }
     public void ReturnItem(){
         Connection conn = null;
@@ -518,6 +530,127 @@ public class LibModel
         loanModel.fireTableDataChanged();
         view.user.setLoanItemTable(loanModel);
         view.user.loanScrollPane.repaint();
+    }
+    public void RateItem(){
+        String title = view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 0).toString();
+        view.ratingFrame.setLabel(title);
+        view.ratingFrame.setVisible(true);
+    }
+    public void ReRateItem(){
+        String title = view.user.ratingTable.getModel().getValueAt(view.user.ratingTable.getSelectedRow(), 1).toString();
+        view.ratingFrame.setLabel(title);
+        view.ratingFrame.setVisible(true);
+    }
+    public void SubRateItem(){
+        String itemID = view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 2).toString();
+        String ratingScore = view.ratingFrame.group.getSelection().getActionCommand();
+        int userID = user.userID;   
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+       
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String sql = "insert into rating set ratingdate = ?,itemid = ?,personid = ?,stars =?;";
+        
+        try
+            {
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                stmt = conn.prepareStatement(sql);
+                stmt.setDate(1, date);
+                stmt.setInt(2, Integer.parseInt(itemID));
+                stmt.setInt(3, userID);
+                stmt.setInt(4, Integer.parseInt(ratingScore));
+                System.out.println(stmt);
+                stmt.executeUpdate();
+
+
+            } catch (SQLException se){
+                //Handle errors for JDBC
+                se.printStackTrace();
+            } catch (Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            } finally{
+                //finally block used to close resources
+                try{
+                    if (stmt != null){
+                        stmt.close();
+                    }
+                } catch (SQLException se2){
+                }
+                try{
+                    if (conn != null){
+                        conn.close();
+                    }
+                } catch (SQLException se){
+                    se.printStackTrace();
+                }
+            }    
+
+        
+        itemModel = DefaultItemSearch("SELECT * from item");
+        itemModel.fireTableDataChanged();
+        view.user.setUserItemTable(itemModel);
+        view.user.scrollPane.repaint();
+        ratingModel = RatingTableGen();
+        ratingModel.fireTableDataChanged();
+        view.user.setRatingItemTable(ratingModel);
+        view.user.ratingScrollPane.repaint();
+        view.ratingFrame.setVisible(false);
+        
+    }
+    public void SubReRateItem(){String itemID = view.user.ratingTable.getModel().getValueAt(view.user.ratingTable.getSelectedRow(), 2).toString();
+        String ratingID = view.user.ratingTable.getModel().getValueAt(view.user.ratingTable.getSelectedRow(), 0).toString();        
+        String ratingScore = view.ratingFrame.group.getSelection().getActionCommand();
+        java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
+       
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String sql = "update rating set Stars= ? where RatingId = ?;";
+        try
+            {
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, Integer.parseInt(ratingScore));
+                stmt.setInt(2, Integer.parseInt(ratingID));
+                System.out.println(stmt);
+                stmt.executeUpdate();
+
+
+            } catch (SQLException se){
+                //Handle errors for JDBC
+                se.printStackTrace();
+            } catch (Exception e){
+                //Handle errors for Class.forName
+                e.printStackTrace();
+            } finally{
+                //finally block used to close resources
+                try{
+                    if (stmt != null){
+                        stmt.close();
+                    }
+                } catch (SQLException se2){
+                }
+                try{
+                    if (conn != null){
+                        conn.close();
+                    }
+                } catch (SQLException se){
+                    se.printStackTrace();
+                }
+            }    
+
+        
+        itemModel = DefaultItemSearch("SELECT * from item");
+        itemModel.fireTableDataChanged();
+        view.user.setUserItemTable(itemModel);
+        view.user.scrollPane.repaint();
+        ratingModel = RatingTableGen();
+        ratingModel.fireTableDataChanged();
+        view.user.setRatingItemTable(ratingModel);
+        view.user.ratingScrollPane.repaint();
+        view.ratingFrame.setVisible(false);
     }
     
 //  USER MODELS
@@ -735,6 +868,42 @@ public class LibModel
                 se.printStackTrace();
             }
         }
+        return null;
+    }
+    public DefaultTableModel RatingTableGen(){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        String sql = "SELECT rating.ratingid, item.title, item.ItemId, rating.ratingdate, rating.stars FROM item, rating WHERE rating.PersonId = ? and item.ItemId = rating.Itemid;";
+        try
+        {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1,user.userID);
+            ResultSet rs = stmt.executeQuery();
+                     
+            return buildTableModel(rs);
+        } catch (SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally{
+            //finally block used to close resources
+            try{
+                if (stmt != null){
+                    stmt.close();
+                }
+            } catch (SQLException se2){
+            }
+            try{
+                if (conn != null){
+                    conn.close();
+                }
+            } catch (SQLException se){
+                se.printStackTrace();
+            }
+        }    
         return null;
     }
     public DefaultTableModel LoanTableGen(){

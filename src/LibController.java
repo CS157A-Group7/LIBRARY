@@ -50,6 +50,9 @@ public class LibController {
             view.user.addMultiSearchListener(new MultiSearchEL());
             view.user.addRentListener(new RentEL());
             view.user.addReturnListener(new ReturnEL());
+            view.user.addRateListener(new RateEL());
+//          RatingEL
+            view.user.addReRateListener(new ReRateEL());            
             
     }
     
@@ -187,4 +190,30 @@ public class LibController {
             model.ReturnItem();
          }
     }
+    class RateEL implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+            System.out.println("Rate");
+            view.ratingFrame.addSubmitListener(new SubRateEL());
+            model.RateItem();
+         }
+    }
+    class ReRateEL implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+            System.out.println("Re-Rate");
+            view.ratingFrame.addSubmitListener(new SubReRateEL());
+            model.ReRateItem();
+         }
+    }
+    class SubRateEL implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+           System.out.println("SubRate");
+           model.SubRateItem();
+        }
+    }
+    class SubReRateEL implements ActionListener{
+     public void actionPerformed(ActionEvent e){
+        System.out.println("SubReRate");
+        model.SubReRateItem();
+     }
+}
 }

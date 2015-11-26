@@ -17,12 +17,14 @@ public class LibView{
     String[] columnNames = {};
     
     Login login;
+    RatingFrame ratingFrame;
     UserView user;
     AdminView admin;
     
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public LibView(LibController cont) {
         login = new Login();
+        ratingFrame = new RatingFrame();
         user = new UserView();
         admin = new AdminView();
     }
@@ -70,11 +72,13 @@ public class LibView{
         JButton sameAuthor;
         JButton multiSearchButton;
         JButton rent;
+        JButton rate;
         
         JComboBox authorsCB;
         JComboBox catsCB;
         
         JPanel topPanel;
+        JPanel bottomPanel;
 //      TopPanel Panels
         JPanel searchButtonPanel;
         JPanel byRatingPanel;
@@ -84,9 +88,13 @@ public class LibView{
               JPanel titlePanel;
               JPanel authorPanel;
               JPanel categoryPanel;
-              
-//      Returns
-              
+//      Rating              
+        JPanel rating;
+        JPanel ratingPanel;
+        JTable ratingTable;
+        JScrollPane ratingScrollPane;
+        JButton reRateButton;              
+//      Returns              
         JPanel returns;
         JPanel loanPanel;
         JTable loanTable;
@@ -100,10 +108,12 @@ public class LibView{
             
             account = new JPanel();
             search = new JPanel();
+            rating = new JPanel();
             returns = new JPanel();
             
             tabbedPane.addTab("Account", new ImageIcon(), account, "Account");
             tabbedPane.addTab("Search", new ImageIcon(), search, "Book Search");
+            tabbedPane.addTab("Rating", new ImageIcon(), rating, "Rate Book");
             tabbedPane.addTab("Return", new ImageIcon(), returns, "Return Book");
 
 //      Account Tab
@@ -134,6 +144,7 @@ public class LibView{
 
 //          PANELS
             topPanel = new JPanel();
+            bottomPanel = new JPanel();
             searchButtonPanel = new JPanel();
             byRatingPanel = new JPanel();
             searchPanel = new JPanel();
@@ -154,6 +165,7 @@ public class LibView{
             sameAuthor = new JButton("Other books by same author");
             multiSearchButton = new JButton("Multi-Search");
             rent = new JButton("Rent");
+            rate = new JButton("Rate");
 //          COMBOBOX
             authorsCB = new JComboBox();
             catsCB = new JComboBox();
@@ -162,6 +174,7 @@ public class LibView{
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             search.setLayout(new BorderLayout());
             topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
+            bottomPanel.setLayout(new GridLayout(2,1));
             searchButtonPanel.setLayout(new BoxLayout(searchButtonPanel,BoxLayout.X_AXIS));
             byRatingPanel.setLayout(new BoxLayout(byRatingPanel,BoxLayout.X_AXIS));
             multiSearchPanel.setLayout(new BoxLayout(multiSearchPanel,BoxLayout.X_AXIS));
@@ -171,14 +184,12 @@ public class LibView{
             categoryPanel.setLayout(new BoxLayout(categoryPanel,BoxLayout.X_AXIS));
             
 //          SEARCH FIELD
-
             titlePanel.add(SearchField);
             titlePanel.add(nameSearch);
             authorPanel.add(authorsCB);
             authorPanel.add(authorSearch);
             categoryPanel.add(catsCB);
             categoryPanel.add(categorySearch);
-            
 //          SEARCH BUTTONS
             searchButtonPanel.add(multiSearchButton);
             searchButtonPanel.add(resetSearchTable);
@@ -192,14 +203,26 @@ public class LibView{
             topPanel.add(categoryPanel);
             topPanel.add(searchButtonPanel);            
             topPanel.add(byRatingPanel);
+            bottomPanel.add(rent);
+            bottomPanel.add(rate);
 //          TABLE  
             searchPanel.add(scrollPane);
 //          TAB
-            search.add(topPanel, BorderLayout.NORTH);
+            search.add(topPanel, BorderLayout.PAGE_START);
             search.add(searchPanel, BorderLayout.CENTER);
-            search.add(rent, BorderLayout.PAGE_END);
+            search.add(bottomPanel,BorderLayout.PAGE_END);           
+//      Rating Tab
+            ratingPanel = new JPanel();
+            rating.setLayout(new BorderLayout());
+            ratingTable = new JTable();
+            ratingScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            reRateButton = new JButton("Re-Rate");
             
-//          Return Tab
+            ratingPanel.add(ratingScrollPane);
+            rating.add(ratingPanel, BorderLayout.CENTER);
+            rating.add(reRateButton, BorderLayout.PAGE_END);
+//      Return Tab
             loanPanel = new JPanel();
             returns.setLayout(new BorderLayout());
             loanTable = new JTable();
@@ -248,6 +271,17 @@ public class LibView{
             this.repaint();
             this.pack();
         }
+        public void setRatingItemTable(DefaultTableModel itemTableModel){
+            ratingPanel.removeAll();
+            ratingTable = new JTable(itemTableModel);
+            ratingTable.setSize(new Dimension(500, 200));
+            ratingTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            ratingScrollPane = new JScrollPane(ratingTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            ratingPanel.add(ratingScrollPane);
+            this.repaint();
+            this.pack();
+        }
         //      Call this when you want to update Return Table
         public void setLoanItemTable(DefaultTableModel itemTableModel){
             loanPanel.removeAll();
@@ -271,6 +305,8 @@ public class LibView{
         void addSameAuthorListener(ActionListener al){sameAuthor.addActionListener(al);}
         void addMultiSearchListener(ActionListener al){multiSearchButton.addActionListener(al);}
         void addRentListener(ActionListener al){rent.addActionListener(al);}
+        void addRateListener(ActionListener al){rate.addActionListener(al);}
+        void addReRateListener(ActionListener al){reRateButton.addActionListener(al);}
         void addReturnListener(ActionListener al){returnButton.addActionListener(al);}
         
     }
@@ -432,10 +468,70 @@ public class LibView{
         
     }
     
-     public void Error(String str){
-            JFrame warning = new JFrame();
-            JOptionPane.showMessageDialog(warning,
-                    str, "Error", JOptionPane.ERROR_MESSAGE);
+    public void Error(String str){
+        JFrame warning = new JFrame();
+        JOptionPane.showMessageDialog(warning,
+                str, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    class RatingFrame extends JFrame{
+        
+        JLabel label;
+        JButton submit;
+        JPanel mainP;
+        JPanel radioP;
+        ButtonGroup group;
+        JRadioButton one;
+        JRadioButton two;
+        JRadioButton three;
+        JRadioButton four;
+        JRadioButton five;
+        
+        public RatingFrame(){
+            this.setLocationRelativeTo(null);
+            this.setTitle("Rate");
+            this.setSize(200,150);
+            
+            label = new JLabel("");
+            submit = new JButton("Rate");
+            mainP = new JPanel();
+            radioP = new JPanel();
+            group = new ButtonGroup();
+            one = new JRadioButton("1");
+            one.setActionCommand("1");
+            two = new JRadioButton("2");
+            two.setActionCommand("2");
+            three = new JRadioButton("3");
+            three.setActionCommand("3");
+            four = new JRadioButton("4");
+            four.setActionCommand("4");
+            five = new JRadioButton("5");
+            five.setActionCommand("5");
+            
+            group.add(one);
+            group.add(two);
+            group.add(three);
+            group.add(four);
+            group.add(five);
+            
+            mainP.setLayout(new BorderLayout());
+            radioP.setLayout(new GridLayout(1,0));
+            radioP.add(one);
+            radioP.add(two);
+            radioP.add(three);
+            radioP.add(four);
+            radioP.add(five);
+            mainP.add(label, BorderLayout.PAGE_START);
+            mainP.add(radioP, BorderLayout.CENTER);
+            mainP.add(submit, BorderLayout.PAGE_END);
+            this.add(mainP);
+            this.setVisible(false);
         }
+        void addSubmitListener(ActionListener al){submit.addActionListener(al);}
+        public void setLabel(String str){
+            label.setText(str);
+            this.repaint();
+        }
+    }
     
 }
