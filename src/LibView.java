@@ -66,6 +66,7 @@ public class LibView{
         JButton nameSearch;
         JButton authorSearch;
         JButton categorySearch;
+        JButton avSearch;
         JButton popSearch;
         JButton ratingSearch;
         JButton ratedHigher;
@@ -160,6 +161,7 @@ public class LibView{
             nameSearch = new JButton("Name Search");
             authorSearch = new JButton("Author Search");
             categorySearch = new JButton("Category Search");
+            avSearch = new JButton("Audio/Visual");
             popSearch = new JButton("Most Popular");
             ratingSearch = new JButton("Highest Rated");
             sameAuthor = new JButton("Other books by same author");
@@ -194,6 +196,7 @@ public class LibView{
             searchButtonPanel.add(multiSearchButton);
             searchButtonPanel.add(resetSearchTable);
 //          RATING BUTTONS  
+            byRatingPanel.add(avSearch);
             byRatingPanel.add(popSearch);
             byRatingPanel.add(ratingSearch);
             byRatingPanel.add(sameAuthor); 
@@ -300,6 +303,7 @@ public class LibView{
         void addNameSearchListener(ActionListener al){nameSearch.addActionListener(al);}
         void addCatSearchListener(ActionListener al){authorSearch.addActionListener(al);}
         void addCategorySearchListener(ActionListener al){categorySearch.addActionListener(al);}
+        void addAVSearchListener(ActionListener al){avSearch.addActionListener(al);}
         void addPopularSearchListener(ActionListener al){popSearch.addActionListener(al);}
         void addRatingSearchListener(ActionListener al){ratingSearch.addActionListener(al);}
         void addSameAuthorListener(ActionListener al){sameAuthor.addActionListener(al);}
@@ -335,8 +339,10 @@ public class LibView{
         JTable  userTable;
         JScrollPane scrollPane;
         JPanel statP;
+        JButton noLoanUser;
         JButton overdueUser;
         JButton ratingUser;
+        JComboBox libCB;
         JButton loansLib;
         JButton resetButton;
         
@@ -377,9 +383,10 @@ public class LibView{
 //              ButtonPanel
                 addUser = new JButton("Add User");
                 delUser = new JButton("Delete User");
+                noLoanUser = new JButton("No Loans");
                 overdueUser = new JButton("Overdue Users");
                 ratingUser  = new JButton("Higher Ratings");
-                
+                libCB = new JComboBox();
                 loansLib = new JButton("Loans Per Library");
                 resetButton = new JButton("Reset");
                 addP.add(addL);
@@ -392,8 +399,10 @@ public class LibView{
                 delP.add(delL);
                 delP.add(delF);
                 delP.add(delUser);
+                statP.add(noLoanUser);
                 statP.add(overdueUser);
                 statP.add(ratingUser);
+                statP.add(libCB);
                 statP.add(loansLib);
                 statP.add(resetButton);
                 bottomP.add(addP);
@@ -423,8 +432,14 @@ public class LibView{
             
         }
         
+        public void SetLibCB(String[] lib){
+            this.libCB.setModel(new DefaultComboBoxModel(lib));
+            this.repaint();
+        }
+        
         void addAddUserListener(ActionListener al){addUser.addActionListener(al);}
         void addDelUserListener(ActionListener al){delUser.addActionListener(al);}
+        void addNoLoanUserListener(ActionListener al){noLoanUser.addActionListener(al);}
         void addOverdueUserListener(ActionListener al){overdueUser.addActionListener(al);}
         void addRatingTwiceListener(ActionListener al){ratingUser.addActionListener(al);}
         void addLPLListener(ActionListener al){loansLib.addActionListener(al);}

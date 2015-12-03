@@ -31,6 +31,7 @@ public class LibController {
 //      Admin AL
         view.admin.addAddUserListener(new AddUserEL());
         view.admin.addDelUserListener(new DelUserEL());
+        view.admin.addNoLoanUserListener(new NoLoanUserEL());
         view.admin.addOverdueUserListener(new OverdueUserEL());
         view.admin.addRatingTwiceListener(new DoubleRatingUserEL());
         view.admin.addLPLListener(new LPLEL());
@@ -44,6 +45,7 @@ public class LibController {
             view.user.addNameSearchListener(new NameSearchEL());
             view.user.addCatSearchListener(new AuthorSearchEL());
             view.user.addCategorySearchListener(new CategorySearchEL());
+            view.user.addAVSearchListener(new AVSearchEL());
             view.user.addPopularSearchListener(new PopularSearchEL());
             view.user.addRatingSearchListener(new RatingSearchEL());
             view.user.addSameAuthorListener(new SameAuthorSearchEL());
@@ -103,6 +105,12 @@ public class LibController {
             model.DelUser();
         }
     }
+    class NoLoanUserEL implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            System.out.println("No Loan Users");
+            model.NoLoanUser();
+        }
+    }
     class OverdueUserEL implements ActionListener{
         public void actionPerformed(ActionEvent e){
             System.out.println("Overdue Users");
@@ -160,6 +168,12 @@ public class LibController {
             model.SameAuthorSearch();
         }
     }  
+    class AVSearchEL implements ActionListener{
+         public void actionPerformed(ActionEvent e){
+            System.out.println("AV Search");
+             model.AVSearch();
+         }
+    }
     class PopularSearchEL implements ActionListener{
          public void actionPerformed(ActionEvent e){
             System.out.println("Popular Search");
@@ -193,6 +207,9 @@ public class LibController {
     class RateEL implements ActionListener{
          public void actionPerformed(ActionEvent e){
             System.out.println("Rate");
+            for(ActionListener act : view.ratingFrame.submit.getActionListeners()) {
+                view.ratingFrame.submit.removeActionListener(act);
+            }
             view.ratingFrame.addSubmitListener(new SubRateEL());
             model.RateItem();
          }
@@ -200,6 +217,9 @@ public class LibController {
     class ReRateEL implements ActionListener{
          public void actionPerformed(ActionEvent e){
             System.out.println("Re-Rate");
+            for(ActionListener act : view.ratingFrame.submit.getActionListeners()) {
+                view.ratingFrame.submit.removeActionListener(act);
+            }
             view.ratingFrame.addSubmitListener(new SubReRateEL());
             model.ReRateItem();
          }
