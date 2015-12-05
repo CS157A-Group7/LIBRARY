@@ -1,6 +1,5 @@
 use library;
 
-select * from person;
 
 -- Give a rating of 5 to all items after a new user "paid" is added to the user list.
 DROP TRIGGER IF EXISTS SuperReviewer;
@@ -9,14 +8,11 @@ CREATE TRIGGER SuperReviewer
 AFTER INSERT ON person
 FOR EACH ROW
 BEGIN
-IF (new.uname= "paid") then
+IF (new.uname= 'PaidGuy') then
      INSERT Into RATING select current_date(),itemid,new.personid,5  from item;
      END IF;
 END//
 delimiter ;
-
-describe person;
-insert into person(uname,usertype,preferredbranch,totalLoansMade) values('paid','A',2,0);
 
 
 
@@ -44,3 +40,5 @@ UPDATE person SET TotalLoansMade = TotalLoansMade-1 WHERE Personid = old.pid;
 
 END//
 delimiter ;
+
+

@@ -1,4 +1,4 @@
-
+use library;
 /*Create a stored procedure that returns the total number of copies of a book our library owns, given a title 
 A. First,find the standard number(S) of A. 
 Then, go through the ITEM table to find tuples where standard Number= S. 
@@ -15,3 +15,4 @@ DELIMITER ;
 
 call FindNumberOfCopies( 'Venezuela, a democracy', '1st ed.','Allen, Henry Justin, 1868-1950.', @result);
 select @result;
+

@@ -13,9 +13,8 @@ commit;
 END //
 DELIMITER ;
 
--- delete from archiveitem;
 -- select * from archiveitem;
 
 call copyToArchive(current_timestamp()+1);
 
--- select * from archiveitem;
+ select * from archiveitem;

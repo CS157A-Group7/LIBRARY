@@ -12,7 +12,7 @@ insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Nathan
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Alicia','U',8,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Bill','U',9,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Jake','A',10,0);
-insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Aish','U',11,0);
+insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Aish','U',9,0);
 
 
 insert into item(title,author,edition,libraryBranchID,ItemType,standardNumber,copies) values("Quién ayuda en casa? / Ricardo Alcántara   ilustrado por    Gusti","Alcántara, Ricardo.","8a ed.",3,"FICTION SPANISH ",8426319173,1);
@@ -306,7 +306,6 @@ insert into loan(pid,itemid,loanDate,overdue) values(6,48,'2015-11-14',0);
 insert into loan(pid,itemid,loanDate,overdue) values(6,49,'2015-11-14',0);
 insert into loan(pid,itemid,loanDate,overdue) values(4,50,'2015-11-14',0);
 insert into loan(pid,itemid,loanDate,overdue) values(3,61,'2015-11-14',0);
-insert into loan(pid,itemid,loandate,overdue) values(2,2,current_date(),1);
 
 
 insert into rating(ratingDate,itemid,personid,stars) values("2015-04-02",2,1,4);

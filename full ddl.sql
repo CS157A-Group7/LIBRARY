@@ -1,5 +1,5 @@
 unlock tables;
-drop database library;
+drop database if exists library ;
 CREATE DATABASE  IF NOT EXISTS `library` ;
 USE `library`;
 
@@ -9,6 +9,7 @@ CREATE TABLE `librarybranch` (
   `Address` varchar(120) DEFAULT NULL,
   PRIMARY KEY (`LibraryBranchID`)
 ); 
+
 
 CREATE TABLE `item` (
   `title` varchar(150) DEFAULT NULL,
@@ -40,22 +41,6 @@ CREATE TABLE `archiveitem` (
 ) ;
 
 
-
-
-CREATE TABLE `itemarchive` (
-  `title` varchar(150) DEFAULT NULL,
-  `author` varchar(120) DEFAULT NULL,
-  `ItemId` int(11) NOT NULL AUTO_INCREMENT,
-  `standardnumber` varchar(20) DEFAULT NULL,
-  `Edition` varchar(50) DEFAULT NULL,
-  `LibraryBranchID` int(11) DEFAULT NULL,
-  `ItemType` varchar(50) DEFAULT NULL,
-  `copies` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ItemId`)
-) ;
-
-
-
 CREATE TABLE `person` (
   `PersonId` int(11) NOT NULL AUTO_INCREMENT,
   `uNAME` varchar(30) NOT NULL,
@@ -66,8 +51,6 @@ CREATE TABLE `person` (
   KEY `person_ibfk_1` (`PreferredBranch`),
   CONSTRAINT `person_ibfk_1` FOREIGN KEY (`PreferredBranch`) REFERENCES `librarybranch` (`LibraryBranchID`)
 ) ;
-
-
 
 
 CREATE TABLE `loan` (
