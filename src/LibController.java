@@ -31,6 +31,7 @@ public class LibController {
 //      Admin AL
         view.admin.addAddUserListener(new AddUserEL());
         view.admin.addDelUserListener(new DelUserEL());
+        view.admin.addLoanUserListener(new LoanerUserEL());
         view.admin.addNoLoanUserListener(new NoLoanUserEL());
         view.admin.addOverdueUserListener(new OverdueUserEL());
         view.admin.addRatingTwiceListener(new DoubleRatingUserEL());
@@ -109,6 +110,12 @@ public class LibController {
         public void actionPerformed(ActionEvent e){
             System.out.println("No Loan Users");
             model.NoLoanUser();
+        }
+    }
+    class LoanerUserEL implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            System.out.println("Loaners");
+            model.LoanUser();
         }
     }
     class OverdueUserEL implements ActionListener{

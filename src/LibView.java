@@ -36,7 +36,7 @@ public class LibView{
         public mainView() {
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setSize(750,400);
+            this.setSize(900,400);
             this.setLayout(new BorderLayout());
             tabbedPane = new JTabbedPane();
             this.add(tabbedPane);
@@ -266,7 +266,7 @@ public class LibView{
         public void setUserItemTable(DefaultTableModel itemTableModel){
             searchPanel.removeAll();
             itemTable = new JTable(itemTableModel);
-            itemTable.setSize(new Dimension(500, 200));
+            itemTable.setSize(new Dimension(800, 200));
             itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             scrollPane = new JScrollPane(itemTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                     JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -339,6 +339,7 @@ public class LibView{
         JTable  userTable;
         JScrollPane scrollPane;
         JPanel statP;
+        JButton loaner;
         JButton noLoanUser;
         JButton overdueUser;
         JButton ratingUser;
@@ -384,6 +385,7 @@ public class LibView{
                 addUser = new JButton("Add User");
                 delUser = new JButton("Delete User");
                 noLoanUser = new JButton("No Loans");
+                loaner = new JButton("Loaners");
                 overdueUser = new JButton("Overdue Users");
                 ratingUser  = new JButton("Higher Ratings");
                 libCB = new JComboBox();
@@ -399,6 +401,7 @@ public class LibView{
                 delP.add(delL);
                 delP.add(delF);
                 delP.add(delUser);
+                statP.add(loaner);
                 statP.add(noLoanUser);
                 statP.add(overdueUser);
                 statP.add(ratingUser);
@@ -439,11 +442,14 @@ public class LibView{
         
         void addAddUserListener(ActionListener al){addUser.addActionListener(al);}
         void addDelUserListener(ActionListener al){delUser.addActionListener(al);}
+        void addLoanUserListener(ActionListener al){loaner.addActionListener(al);}
         void addNoLoanUserListener(ActionListener al){noLoanUser.addActionListener(al);}
         void addOverdueUserListener(ActionListener al){overdueUser.addActionListener(al);}
         void addRatingTwiceListener(ActionListener al){ratingUser.addActionListener(al);}
         void addLPLListener(ActionListener al){loansLib.addActionListener(al);}
         void addResetUserListener(ActionListener al){resetButton.addActionListener(al);}
+
+        
         
     }
     

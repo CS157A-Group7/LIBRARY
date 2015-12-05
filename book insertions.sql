@@ -4,7 +4,7 @@ INSERT INTO `librarybranch` VALUES (1,'Arlington Library','203 Arlington Ave. at
 
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Amy','A',2,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Anne','U',1,0);
-insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Ben','A',2,0);
+insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Ben','U',2,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Cody','U',3,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Brandon','A',5,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Jordan','U',6,0);
@@ -12,6 +12,7 @@ insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Nathan
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Alicia','U',8,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Bill','U',9,0);
 insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Jake','A',10,0);
+insert into person(uname,usertype,preferredbranch,totalLoansMade) values('Aish','U',11,0);
 
 
 insert into item(title,author,edition,libraryBranchID,ItemType,standardNumber,copies) values("Quién ayuda en casa? / Ricardo Alcántara   ilustrado por    Gusti","Alcántara, Ricardo.","8a ed.",3,"FICTION SPANISH ",8426319173,1);
@@ -266,45 +267,45 @@ insert into item(title,author,edition,libraryBranchID,ItemType,standardNumber,co
 insert into item(title,author,edition,libraryBranchID,ItemType,standardNumber,copies) values("Death of a valentine [electronic resource] / M.C. Beaton","Beaton, M. C.","1st eBook ed.",7,"EBOOK ",9780446558433,3);
 insert into item(title,author,edition,libraryBranchID,ItemType,standardNumber,copies) values("Death of a valentine [electronic resource] / M.C. Beaton","Beaton, M. C.","1st eBook ed.",10,"EBOOK ",9780446558433,2);
 
-insert into loan(pid,itemid,loanDate,overdue) values (1,2,'2015-11-02',false); 
-insert into loan(pid,itemid,loanDate,overdue) values (1,31,'2015-10-05',true); 
-insert into loan(pid,itemid,loanDate,overdue) values (2,20,'2015-09-03',true); 
+insert into loan(pid,itemid,loanDate,overdue) values (2,2,'2015-11-02',false); 
+insert into loan(pid,itemid,loanDate,overdue) values (8,31,'2015-10-05',true); 
+insert into loan(pid,itemid,loanDate,overdue) values (3,20,'2015-09-03',true); 
 insert into loan(pid,itemid,loanDate,overdue) values (3,19,'2015-11-27',false); 
 insert into loan(pid,itemid,loanDate,overdue) values (4,17,'2015-10-19',true); 
 insert into loan(pid,itemid,loanDate,overdue) values (6,14,'2015-09-18',false); 
-insert into loan(pid,itemid,loanDate,overdue) values (7,13,'2015-11-17',true); 
+insert into loan(pid,itemid,loanDate,overdue) values (8,13,'2015-11-17',true); 
 insert into loan(pid,itemid,loanDate,overdue) values (9,12,'2015-10-05',false); 
-insert into loan(pid,itemid,loanDate,overdue) values (10,12,'2015-09-12',true); 
+insert into loan(pid,itemid,loanDate,overdue) values (4,12,'2015-09-12',true); 
 insert into loan(pid,itemid,loanDate,overdue) values (2,10,'2015-11-01',false); 
-insert into loan(pid,itemid,loanDate,overdue) values (3,3,'2015-10-10',true); 
+insert into loan(pid,itemid,loanDate,overdue) values (4,3,'2015-10-10',true); 
 
 
 insert into rating(ratingdate,itemid,personid,stars) values('2015-04-03',2,1,5);
 insert into rating(ratingdate,itemid,personid,stars) values('2014-12-13',3,2,4);
 insert into rating(ratingdate,itemid,personid,stars) values('2015-01-23',10,2,5);
-insert into rating(ratingdate,itemid,personid,stars) values('2013-04-05',12,3,2);
+insert into rating(ratingdate,itemid,personid,stars) values('2013-04-05',12,4,2);
 insert into rating(ratingdate,itemid,personid,stars) values('2015-02-13',40,4,5);
-insert into rating(ratingdate,itemid,personid,stars) values('2012-08-23',50,5,4);
+insert into rating(ratingdate,itemid,personid,stars) values('2012-08-23',50,9,4);
 insert into rating(ratingdate,itemid,personid,stars) values('2015-05-03',71,6,3);
-insert into rating(ratingdate,itemid,personid,stars) values('2014-01-10',81,7,1);
+insert into rating(ratingdate,itemid,personid,stars) values('2014-01-10',81,6,1);
 insert into rating(ratingdate,itemid,personid,stars) values('2011-03-09',41,8,2);
 insert into rating(ratingdate,itemid,personid,stars) values('2010-04-07',31,9,5);
-insert into rating(ratingdate,itemid,personid,stars) values('2015-08-27',51,10,4);
+insert into rating(ratingdate,itemid,personid,stars) values('2015-08-27',51,8,4);
 insert into rating(ratingdate,itemid,personid,stars) values('2013-07-13',61,9,4);
 insert into rating(ratingdate,itemid,personid,stars) values('2012-06-09',50,8,3);
 
 
 
-insert into loan(pid,itemid,loanDate,overdue) values(3,41,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(9,41,'2015-11-14',0);
 insert into loan(pid,itemid,loanDate,overdue) values(4,44,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(5,45,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(8,41,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(10,41,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(5,47,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(5,48,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(1,49,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(9,45,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(3,41,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(2,41,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(6,47,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(6,48,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(6,49,'2015-11-14',0);
 insert into loan(pid,itemid,loanDate,overdue) values(4,50,'2015-11-14',0);
-insert into loan(pid,itemid,loanDate,overdue) values(10,61,'2015-11-14',0);
+insert into loan(pid,itemid,loanDate,overdue) values(3,61,'2015-11-14',0);
 insert into loan(pid,itemid,loandate,overdue) values(2,2,current_date(),1);
 
 

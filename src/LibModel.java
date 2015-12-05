@@ -17,7 +17,7 @@ public class LibModel
     DefaultTableModel loanModel;
 
     User user;
-    
+
     ArrayList<String> libs;
     ArrayList<String> authors;
     ArrayList<String> cats;
@@ -28,26 +28,26 @@ public class LibModel
 
     //  Database credentials
     static final String USER = "root";
-    static final String PASS = "1433239_Jp";
+    static final String PASS = "";
 
     public LibModel(LibView view)
     {
         this.view = view;
-        
+
         user = new User();
-        
+
         libs = new ArrayList<String>();
         getCBData(libs, "BranchName", "librarybranch");
         authors = new ArrayList<String>();
         getCBData(authors, "author", "item");
         authors.remove(0);
-        cats =  new ArrayList<String>();
+        cats = new ArrayList<String>();
         getCBData(cats, "ItemType", "item");
         cats.remove(0);
         view.user.SetSearchCB(authors.toArray(new String[authors.size()]),
-                                cats.toArray(new String[cats.size()]));
+                cats.toArray(new String[cats.size()]));
         view.admin.SetLibCB(libs.toArray(new String[libs.size()]));
-        
+
         userModel = GenTableModel("person");
         this.view.admin.setAdminUserTable(userModel);
         itemModel = GenTableModel("item");
@@ -105,7 +105,8 @@ public class LibModel
         Connection conn = null;
         PreparedStatement stmt = null;
 
-        String sql = "Select PersonID, uName, UserType, PreferredBranch From person Where PersonID = ?";
+        String sql
+                = "Select PersonID, uName, UserType, PreferredBranch From person Where PersonID = ?";
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -114,40 +115,51 @@ public class LibModel
             ResultSet rs = stmt.executeQuery();
 
             int rowcount = 0;
-            if (rs.last()){
+            if (rs.last())
+            {
                 rowcount = rs.getRow();
                 rs.beforeFirst();
             }
-            if (rowcount != 0){
+            if (rowcount != 0)
+            {
                 rs.next();
                 user.userID = ((Number) rs.getObject(1)).intValue();
                 user.userName = rs.getString(2);
                 user.userType = rs.getString(3);
                 user.preferredBranch = ((Number) rs.getObject(4)).intValue();
-            } else{
+            } else
+            {
                 view.login.LoginError();
             }
 
-        } catch (SQLException se){
+        } catch (SQLException se)
+        {
             //Handle errors for JDBC
             se.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e)
+        {
             //Handle errors for Class.forName
             e.printStackTrace();
-        } finally{
+        } finally
+        {
             //finally block used to close resources
-            try{
+            try
+            {
                 if (stmt != null)
                 {
                     stmt.close();
                 }
-            } catch (SQLException se2){
+            } catch (SQLException se2)
+            {
             }
-            try{
-                if (conn != null){
+            try
+            {
+                if (conn != null)
+                {
                     conn.close();
                 }
-            } catch (SQLException se){
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
             }
         }
@@ -162,9 +174,8 @@ public class LibModel
         Connection conn = null;
         PreparedStatement stmt = null;
 
-        String sql = 
-                    "SELECT BranchName FROM librarybranch Where ?";
-        
+        String sql = "SELECT BranchName FROM librarybranch Where ?";
+
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -278,15 +289,18 @@ public class LibModel
     }
 
 //  USER Methods
-    public void UpdateInfo(){
+    public void UpdateInfo()
+    {
         String newLib = view.user.userLibCB.getSelectedItem().toString();
         System.out.println(newLib);
-        itemModel = updateUserBranch(Integer.toString(user.userID),newLib);
+        itemModel = updateUserBranch(Integer.toString(user.userID), newLib);
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
         view.user.scrollPane.repaint();
     }
-    public void Reset(){
+
+    public void Reset()
+    {
         itemModel = GenTableModel("item");
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
@@ -295,44 +309,58 @@ public class LibModel
         view.user.catsCB.setSelectedIndex(0);
         view.user.scrollPane.repaint();
     }
-    public void NameSearch(){
+
+    public void NameSearch()
+    {
         String searchParam = view.user.SearchField.getText();
-        if(searchParam.compareTo("Search Title...") != 0 
-                                && searchParam.compareTo("") != 0){
+        if (searchParam.compareTo("Search Title...") != 0
+                && searchParam.compareTo("") != 0)
+        {
             System.out.println(searchParam);
             itemModel = Search(searchParam, "item", "*", "title", itemModel);
             itemModel.fireTableDataChanged();
             view.user.setUserItemTable(itemModel);
             view.user.scrollPane.repaint();
-        } else {
+        } else
+        {
             view.Error("No Title Entered");
         }
     }
-    public void AuthorSearch(){
+
+    public void AuthorSearch()
+    {
         String searchParam = view.user.authorsCB.getSelectedItem().toString();
-        if(searchParam.compareTo("None") != 0){
+        if (searchParam.compareTo("None") != 0)
+        {
             System.out.println(searchParam);
             itemModel = Search(searchParam, "item", "*", "author", itemModel);
             itemModel.fireTableDataChanged();
             view.user.setUserItemTable(itemModel);
             view.user.scrollPane.repaint();
-        } else {
+        } else
+        {
             view.Error("No Author Selected");
         }
     }
-    public void CategorySearch(){
-            String searchParam = view.user.catsCB.getSelectedItem().toString();
-            if(searchParam.compareTo("None") != 0){
-                System.out.println(searchParam);
-                itemModel = Search(searchParam, "item", "*", "itemtype", itemModel);
-                itemModel.fireTableDataChanged();
-                view.user.setUserItemTable(itemModel);
-                view.user.scrollPane.repaint();
-            } else {
-                view.Error("No Category Selected");
-            }
+
+    public void CategorySearch()
+    {
+        String searchParam = view.user.catsCB.getSelectedItem().toString();
+        if (searchParam.compareTo("None") != 0)
+        {
+            System.out.println(searchParam);
+            itemModel = Search(searchParam, "item", "*", "itemtype", itemModel);
+            itemModel.fireTableDataChanged();
+            view.user.setUserItemTable(itemModel);
+            view.user.scrollPane.repaint();
+        } else
+        {
+            view.Error("No Category Selected");
+        }
     }
-    public void SameAuthorSearch(){
+
+    public void SameAuthorSearch()
+    {
         String searchParam = view.user.SearchField.getText();
         System.out.println(searchParam);
         itemModel = SearchBooksBySameAuthor(searchParam, itemModel);
@@ -340,90 +368,112 @@ public class LibModel
         view.user.setUserItemTable(itemModel);
         view.user.scrollPane.repaint();
     }
-    public void AVSearch(){
-        String sql = "select distinct title,author,edition,itemtype from item where itemtype like \"%ebook%\" \n" +
-            " union   \n" +
-            " select distinct title,author,edition,itemtype from item where itemtype like \"%audio%\" \n" +
-            " union\n" +
-            " select  distinct title,author,edition,itemtype from item where itemtype like\"%cd%\"\n" +
-            " union  \n" +
-            " distinct select title,author,edition,itemtype from item where itemtype like \"%dvd%\" ;";
+
+    public void AVSearch()
+    {
+        String sql
+                = "select distinct title,author,edition,itemtype from item where itemtype like \"%ebook%\" \n"
+                + " union   \n"
+                + " select distinct title,author,edition,itemtype from item where itemtype like \"%audio%\" \n"
+                + " union\n"
+                + " select  distinct title,author,edition,itemtype from item where itemtype like\"%cd%\"\n"
+                + " union  \n"
+                + " distinct select title,author,edition,itemtype from item where itemtype like \"%dvd%\" ;";
         itemModel = DefaultItemSearch(sql);
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
         view.user.scrollPane.repaint();
     }
-    public void PopularSearch(){
-         String sql =    "select title,count(*) total " +
-                        "from loan join item on Loan.itemid=Item.itemid " +
-                        "where ItemType='BOOK' " +
-                        "group by title,standardNumber " +
-                        "order by total desc " +
-                        "Limit 5";
+
+    public void PopularSearch()
+    {
+        String sql = "select title,count(*) total "
+                + "from loan join item on Loan.itemid=Item.itemid "
+                + "where ItemType='BOOK' " + "group by title,standardNumber "
+                + "order by total desc " + "Limit 5";
         itemModel = DefaultItemSearch(sql);
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
         view.user.scrollPane.repaint();
     }
-    public void RatingSearch(){
-        String sql =    "select title,avg(stars) " +
-                        "from rating join item on rating.itemid=Item.itemid " +
-                        "where ItemType='Book' " +
-                        "group by title,standardnumber " +
-                        "order by avg(stars) desc " +
-                        "limit 5";
+
+    public void RatingSearch()
+    {
+
+        String sql = "select title,avg(stars) "
+                + "from rating join item on rating.itemid=Item.itemid "
+                + "where ItemType='Book' " + "group by title,edition,author "
+                + "order by avg(stars) desc " + "limit 5";
+
         itemModel = DefaultItemSearch(sql);
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
         view.user.scrollPane.repaint();
     }
-    public void MultiSearch(){
+
+    public void MultiSearch()
+    {
         Boolean i = false;
         String sql = "SELECT * FROM item WHERE";
-        if(view.user.SearchField.getText().compareTo("Search Title...") != 0){
-            sql = sql + " title Like '%" + view.user.SearchField.getText() + "%'";
+        if (view.user.SearchField.getText().compareTo("Search Title...") != 0)
+        {
+            sql = sql + " title Like '%" + view.user.SearchField.getText()
+                    + "%'";
             i = true;
         }
-        if(view.user.authorsCB.getSelectedItem().toString().compareTo("None") != 0){
-            if(i){
+        if (view.user.authorsCB.getSelectedItem().toString().compareTo("None")
+                != 0)
+        {
+            if (i)
+            {
                 sql = sql + " and";
             }
-            sql = sql + " author = '" + 
-                view.user.authorsCB.getSelectedItem().toString() + "'";
+            sql = sql + " author = '" + view.user.authorsCB.getSelectedItem().
+                    toString() + "'";
             i = true;
         }
-        if(view.user.catsCB.getSelectedItem().toString().compareTo("None") != 0){
-             if(i){
+        if (view.user.catsCB.getSelectedItem().toString().compareTo("None") != 0)
+        {
+            if (i)
+            {
                 sql = sql + " and";
             }
-            sql = sql + " ItemType = '" + 
-                view.user.catsCB.getSelectedItem().toString() + "'";
+            sql = sql + " ItemType = '" + view.user.catsCB.getSelectedItem().
+                    toString() + "'";
         }
         itemModel = DefaultItemSearch(sql);
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
         view.user.scrollPane.repaint();
-    }    
-    public void RentItem(){
+    }
+
+    public void RentItem()
+    {
         Connection conn = null;
         int userID = user.userID;
-        String itemID = view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 2).toString();
-        int copies = Integer.parseInt(view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 7).toString());
+        String itemID = view.user.itemTable.getModel().getValueAt(
+                view.user.itemTable.getSelectedRow(), 2).toString();
+        int copies = Integer.parseInt(view.user.itemTable.getModel().getValueAt(
+                view.user.itemTable.getSelectedRow(), 7).toString());
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
-        
+
         PreparedStatement itemStmt = null;
-        String itemSql = "update item set copies = copies -1 where item.ItemId = ?";
+        String itemSql
+                = "update item set copies = copies -1 where item.ItemId = ?";
 //        PreparedStatement personStmt = null;
 //        String personSql = "update person set TotalLoansMade = TotalLoansMade + 1 where personId = ?";
         PreparedStatement loanStmt = null;
-        String loanSql = "insert into loan SET pid = ?, ItemId = ?, loandate = ?,overdue = false ON DUPLICATE KEY UPDATE ItemId = ?, loandate = ?,overdue = false;"  ;
-        
-        if(copies > 0){
+        String loanSql
+                = "insert into loan SET pid = ?, ItemId = ?, loandate = ?,overdue = false ON DUPLICATE KEY UPDATE ItemId = ?, loandate = ?,overdue = false;";
+
+        if (copies > 0)
+        {
             try
             {
                 conn = DriverManager.getConnection(DB_URL, USER, PASS);
                 itemStmt = conn.prepareStatement(itemSql);
                 itemStmt.setInt(1, Integer.parseInt(itemID));
+
                 System.out.println(itemStmt);
                 itemStmt.executeUpdate();
 
@@ -431,7 +481,6 @@ public class LibModel
 //                personStmt.setInt(1, userID);
 //                System.out.println(personStmt);
 //                personStmt.executeUpdate();
-
                 loanStmt = conn.prepareStatement(loanSql);
                 loanStmt.setInt(1, userID);
                 loanStmt.setInt(2, Integer.parseInt(itemID));
@@ -441,35 +490,46 @@ public class LibModel
                 System.out.println(loanStmt);
                 loanStmt.executeUpdate();
 
-            } catch (SQLException se){
+
+            } catch (SQLException se)
+            {
                 //Handle errors for JDBC
                 se.printStackTrace();
-            } catch (Exception e){
+            } catch (Exception e)
+            {
                 //Handle errors for Class.forName
                 e.printStackTrace();
-            } finally{
+            } finally
+            {
                 //finally block used to close resources
-                try{
-                    if (itemStmt != null){
+                try
+                {
+                    if (itemStmt != null)
+                    {
                         itemStmt.close();
                     }
 //                    if (personStmt != null){
 //                        personStmt.close();
 //                    }
-                } catch (SQLException se2){
+                } catch (SQLException se2)
+                {
                 }
-                try{
-                    if (conn != null){
+                try
+                {
+                    if (conn != null)
+                    {
                         conn.close();
                     }
-                } catch (SQLException se){
+                } catch (SQLException se)
+                {
                     se.printStackTrace();
                 }
-            }    
-        } else {
+            }
+        } else
+        {
             view.Error("No Copies Available");
         }
-        
+
         itemModel = DefaultItemSearch("SELECT * from item");
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
@@ -479,62 +539,71 @@ public class LibModel
         view.user.setLoanItemTable(loanModel);
         view.user.loanScrollPane.repaint();
     }
-    public void ReturnItem(){
+
+    public void ReturnItem()
+    {
         Connection conn = null;
         int userID = user.userID;
-        String loanID = view.user.loanTable.getModel().getValueAt(view.user.loanTable.getSelectedRow(), 0).toString();
-        String itemID = view.user.loanTable.getModel().getValueAt(view.user.loanTable.getSelectedRow(), 2).toString();
+        String loanID = view.user.loanTable.getModel().getValueAt(
+                view.user.loanTable.getSelectedRow(), 0).toString();
+        String itemID = view.user.loanTable.getModel().getValueAt(
+                view.user.loanTable.getSelectedRow(), 2).toString();
 
         PreparedStatement itemStmt = null;
-        String itemSql = "update item set copies = copies +1 where item.ItemId = ?";
-        PreparedStatement personStmt = null;
-        String personSql = "update person set TotalLoansMade = TotalLoansMade - 1 where personId = ?";
+        String itemSql
+                = "update item set copies = copies +1 where item.ItemId = ?";
+ //       PreparedStatement personStmt = null;
+        //       String personSql = "update person set TotalLoansMade = TotalLoansMade - 1 where personId = ?";
         PreparedStatement delStmt = null;
-        String loanSql = "delete from loan where loan.LoanId = ?"  ;
-        
+        String loanSql = "delete from loan where loan.LoanId = ?";
+
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             itemStmt = conn.prepareStatement(itemSql);
             itemStmt.setInt(1, Integer.parseInt(itemID));
             System.out.println(itemStmt);
+ 
             itemStmt.executeUpdate();
-            
-            personStmt = conn.prepareStatement(personSql);
-            personStmt.setInt(1, userID);
-            System.out.println(personStmt);
-            personStmt.executeUpdate();
 
             delStmt = conn.prepareStatement(loanSql);
             delStmt.setInt(1, Integer.parseInt(loanID));
             System.out.println(delStmt);
             delStmt.executeUpdate();
-            
-        } catch (SQLException se){
+
+   
+
+        } catch (SQLException se)
+        {
             //Handle errors for JDBC
             se.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e)
+        {
             //Handle errors for Class.forName
             e.printStackTrace();
-        } finally{
+        } finally
+        {
             //finally block used to close resources
-            try{
-                if (itemStmt != null){
+            try
+            {
+                if (itemStmt != null)
+                {
                     itemStmt.close();
                 }
-                if (personStmt != null){
-                    personStmt.close();
-                }
-            } catch (SQLException se2){
+            } catch (SQLException se2)
+            {
             }
-            try{
-                if (conn != null){
+            try
+            {
+                if (conn != null)
+                {
                     conn.close();
                 }
-            } catch (SQLException se){
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
             }
-        } 
+        }
         itemModel = DefaultItemSearch("SELECT * from item");
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
@@ -544,63 +613,81 @@ public class LibModel
         view.user.setLoanItemTable(loanModel);
         view.user.loanScrollPane.repaint();
     }
-    public void RateItem(){
-        String title = view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 0).toString();
+
+    public void RateItem()
+    {
+        String title = view.user.itemTable.getModel().getValueAt(
+                view.user.itemTable.getSelectedRow(), 0).toString();
         view.ratingFrame.setLabel(title);
         view.ratingFrame.setVisible(true);
     }
-    public void ReRateItem(){
-        String title = view.user.ratingTable.getModel().getValueAt(view.user.ratingTable.getSelectedRow(), 1).toString();
+
+    public void ReRateItem()
+    {
+        String title = view.user.ratingTable.getModel().getValueAt(
+                view.user.ratingTable.getSelectedRow(), 1).toString();
         view.ratingFrame.setLabel(title);
         view.ratingFrame.setVisible(true);
     }
-    public void SubRateItem(){
-        String itemID = view.user.itemTable.getModel().getValueAt(view.user.itemTable.getSelectedRow(), 2).toString();
-        String ratingScore = view.ratingFrame.group.getSelection().getActionCommand();
-        int userID = user.userID;   
+
+    public void SubRateItem()
+    {
+        String itemID = view.user.itemTable.getModel().getValueAt(
+                view.user.itemTable.getSelectedRow(), 2).toString();
+        String ratingScore = view.ratingFrame.group.getSelection().
+                getActionCommand();
+        int userID = user.userID;
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
-       
+
         System.out.println(itemID);
         Connection conn = null;
         PreparedStatement stmt = null;
-        String sql = "insert into rating set ratingdate = ?,itemid = ?,personid = ?,stars =?;";
-        
+        String sql
+                = "insert into rating set ratingdate = ?,itemid = ?,personid = ?,stars =?;";
+
         try
+        {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.prepareStatement(sql);
+            stmt.setDate(1, date);
+            stmt.setInt(2, Integer.parseInt(itemID));
+            stmt.setInt(3, userID);
+            stmt.setInt(4, Integer.parseInt(ratingScore));
+            System.out.println(stmt);
+            stmt.executeUpdate();
+
+        } catch (SQLException se)
+        {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally
+        {
+            //finally block used to close resources
+            try
             {
-                conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                stmt = conn.prepareStatement(sql);
-                stmt.setDate(1, date);
-                stmt.setInt(2, Integer.parseInt(itemID));
-                stmt.setInt(3, userID);
-                stmt.setInt(4, Integer.parseInt(ratingScore));
-                System.out.println(stmt);
-                stmt.executeUpdate();
-
-
-            } catch (SQLException se){
-                //Handle errors for JDBC
+                if (stmt != null)
+                {
+                    stmt.close();
+                }
+            } catch (SQLException se2)
+            {
+            }
+            try
+            {
+                if (conn != null)
+                {
+                    conn.close();
+                }
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
-            } catch (Exception e){
-                //Handle errors for Class.forName
-                e.printStackTrace();
-            } finally{
-                //finally block used to close resources
-                try{
-                    if (stmt != null){
-                        stmt.close();
-                    }
-                } catch (SQLException se2){
-                }
-                try{
-                    if (conn != null){
-                        conn.close();
-                    }
-                } catch (SQLException se){
-                    se.printStackTrace();
-                }
-            }    
+            }
+        }
 
-        
         itemModel = DefaultItemSearch("SELECT * from item");
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
@@ -610,52 +697,63 @@ public class LibModel
         view.user.setRatingItemTable(ratingModel);
         view.user.ratingScrollPane.repaint();
         view.ratingFrame.setVisible(false);
-        
+
     }
-    public void SubReRateItem(){
-        String itemID = view.user.ratingTable.getModel().getValueAt(view.user.ratingTable.getSelectedRow(), 2).toString();
-        String ratingID = view.user.ratingTable.getModel().getValueAt(view.user.ratingTable.getSelectedRow(), 0).toString();        
-        String ratingScore = view.ratingFrame.group.getSelection().getActionCommand();
+
+    public void SubReRateItem()
+    {
+        String itemID = view.user.ratingTable.getModel().getValueAt(
+                view.user.ratingTable.getSelectedRow(), 2).toString();
+        String ratingID = view.user.ratingTable.getModel().getValueAt(
+                view.user.ratingTable.getSelectedRow(), 0).toString();
+        String ratingScore = view.ratingFrame.group.getSelection().
+                getActionCommand();
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
-       
-        
+
         Connection conn = null;
         PreparedStatement stmt = null;
         String sql = "update rating set Stars = ? where RatingId = ?;";
         try
+        {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(ratingScore));
+            stmt.setInt(2, Integer.parseInt(ratingID));
+            System.out.println(stmt);
+            stmt.executeUpdate();
+
+        } catch (SQLException se)
+        {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e)
+        {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally
+        {
+            //finally block used to close resources
+            try
             {
-                conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                stmt = conn.prepareStatement(sql);
-                stmt.setInt(1, Integer.parseInt(ratingScore));
-                stmt.setInt(2, Integer.parseInt(ratingID));
-                System.out.println(stmt);
-                stmt.executeUpdate();
-
-
-            } catch (SQLException se){
-                //Handle errors for JDBC
+                if (stmt != null)
+                {
+                    stmt.close();
+                }
+            } catch (SQLException se2)
+            {
+            }
+            try
+            {
+                if (conn != null)
+                {
+                    conn.close();
+                }
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
-            } catch (Exception e){
-                //Handle errors for Class.forName
-                e.printStackTrace();
-            } finally{
-                //finally block used to close resources
-                try{
-                    if (stmt != null){
-                        stmt.close();
-                    }
-                } catch (SQLException se2){
-                }
-                try{
-                    if (conn != null){
-                        conn.close();
-                    }
-                } catch (SQLException se){
-                    se.printStackTrace();
-                }
-            }    
+            }
+        }
 
-        
         itemModel = DefaultItemSearch("SELECT * from item");
         itemModel.fireTableDataChanged();
         view.user.setUserItemTable(itemModel);
@@ -666,7 +764,7 @@ public class LibModel
         view.user.ratingScrollPane.repaint();
         view.ratingFrame.setVisible(false);
     }
-    
+
 //  USER MODELS
     public DefaultTableModel Search(String searchParam, String table, String col,
             String where, DefaultTableModel model)
@@ -726,6 +824,7 @@ public class LibModel
         }
         return null;
     }
+
     public DefaultTableModel DefaultItemSearch(String sql)
     {
 
@@ -776,6 +875,7 @@ public class LibModel
 
         return null;
     }
+
     //Updates a user's information.
     public DefaultTableModel updateUserBranch(String uID, String newLib)
     {
@@ -829,13 +929,16 @@ public class LibModel
         }
         return null;
     }
-    public DefaultTableModel SearchBooksBySameAuthor(String title, DefaultTableModel model)
+
+    public DefaultTableModel SearchBooksBySameAuthor(String title,
+            DefaultTableModel model)
     {
         Connection conn = null;
         PreparedStatement stmt = null;
 
-        String sql = "select distinct title from item old where author = (select distinct author  from item  where title= ? )";
-        
+        String sql
+                = "select distinct title,edition from item old where author = (select distinct author  from item  where title= ? )";
+
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -887,193 +990,257 @@ public class LibModel
         }
         return null;
     }
-    public DefaultTableModel RatingTableGen(){
+
+    public DefaultTableModel RatingTableGen()
+    {
         Connection conn = null;
         PreparedStatement stmt = null;
-        String sql = "SELECT rating.ratingid, item.title, item.ItemId, rating.ratingdate, rating.stars FROM item, rating WHERE rating.PersonId = ? and item.ItemId = rating.Itemid;";
+        String sql
+                = "SELECT rating.ratingid, item.title, item.ItemId, rating.ratingdate, rating.stars FROM item, rating WHERE rating.PersonId = ? and item.ItemId = rating.Itemid;";
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,user.userID);
+            stmt.setInt(1, user.userID);
             ResultSet rs = stmt.executeQuery();
-                     
+
             return buildTableModel(rs);
-        } catch (SQLException se){
+        } catch (SQLException se)
+        {
             //Handle errors for JDBC
             se.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e)
+        {
             //Handle errors for Class.forName
             e.printStackTrace();
-        } finally{
+        } finally
+        {
             //finally block used to close resources
-            try{
-                if (stmt != null){
+            try
+            {
+                if (stmt != null)
+                {
                     stmt.close();
                 }
-            } catch (SQLException se2){
+            } catch (SQLException se2)
+            {
             }
-            try{
-                if (conn != null){
+            try
+            {
+                if (conn != null)
+                {
                     conn.close();
                 }
-            } catch (SQLException se){
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
             }
-        }    
+        }
         return null;
     }
-    public DefaultTableModel LoanTableGen(){
+
+    public DefaultTableModel LoanTableGen()
+    {
         Connection conn = null;
         PreparedStatement stmt = null;
-        String sql = "SELECT loan.LoanID, item.title, item.ItemId, loan.loanDate, loan.overdue FROM item, loan WHERE loan.Pid = ? and item.ItemId = loan.Itemid;";
+        String sql
+                = "SELECT loan.LoanID, item.title, item.ItemId, loan.loanDate, loan.overdue FROM item, loan WHERE loan.Pid = ? and item.ItemId = loan.Itemid;";
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1,user.userID);
+            stmt.setInt(1, user.userID);
             ResultSet rs = stmt.executeQuery();
-                     
+
             return buildTableModel(rs);
-        } catch (SQLException se){
+        } catch (SQLException se)
+        {
             //Handle errors for JDBC
             se.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e)
+        {
             //Handle errors for Class.forName
             e.printStackTrace();
-        } finally{
+        } finally
+        {
             //finally block used to close resources
-            try{
-                if (stmt != null){
+            try
+            {
+                if (stmt != null)
+                {
                     stmt.close();
                 }
-            } catch (SQLException se2){
+            } catch (SQLException se2)
+            {
             }
-            try{
-                if (conn != null){
+            try
+            {
+                if (conn != null)
+                {
                     conn.close();
                 }
-            } catch (SQLException se){
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
             }
-        }    
+        }
         return null;
     }
 
 //  ADMIN METHODS
-    public void ResetUserTable(){
+    public void ResetUserTable()
+    {
         String sql = "Select * from person";
         userModel = DefualtUserSearch(sql);
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
         view.admin.scrollPane.repaint();
     }
-    public void AddUser(){
+
+    public void AddUser()
+    {
         String uname = view.admin.addUnameF.getText();
         String usertype = view.admin.addTypeCB.getSelectedItem().toString();
-        String prefBranch = view.admin.addPrefBranchCB.getSelectedItem().toString();
+        String prefBranch = view.admin.addPrefBranchCB.getSelectedItem().
+                toString();
         String loans = "0";
-        userModel = addUser(uname,usertype,prefBranch,loans);
+        userModel = addUser(uname, usertype, prefBranch, loans);
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
         view.admin.scrollPane.repaint();
     }
-    public void DelUser(){
+
+    public void DelUser()
+    {
         String uID = view.admin.delF.getText();
         userModel = delUser(uID);
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
-        view.admin.scrollPane.repaint();        
+        view.admin.scrollPane.repaint();
     }
-    public void NoLoanUser(){
-        String sql = "select * from person " 
-                + "where PersonId not in( select Pid as PersonId from loan group by Pid);";
+
+    public void NoLoanUser()
+    {
+        String sql
+                = "SELECT * FROM PERSON left outer JOIN LOAN ON person.personid = LOAN.pid where loanid is null;";
         userModel = DefualtUserSearch(sql);
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
         view.admin.scrollPane.repaint();
     }
-    public void OverdueUser(){
-        String sql =    "select PersonId,uname,count(*) " +
-                            "from Person join Loan on Person.PersonId=Loan.Pid " +
-                            "where overdue = true " +
-                            "group by personid " +
-                            "having count(*)>=2";
+
+    public void LoanUser()
+    {
+        String sql = "select distinct title , uNAME "
+                + "from person join loan on person.PersonId=loan.pid join item on Loan.itemid=Item.itemid "
+                + "where UserType ='U'" + "order by title;  ";
         userModel = DefualtUserSearch(sql);
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
         view.admin.scrollPane.repaint();
     }
-    public void DoubleRatingUser(){
-        String sql =    "select r1.personid,i1.title,i1.author,i1.edition,r1.ratingdate,r1.stars,r2.ratingdate,r2.stars " +
-                            "from rating r1 join rating r2 on r1.personid=R2.PERSONID " + 
-                            "join Item i1 on i1.itemid=r1.itemid " + 
-                            "join item i2 on i2.itemid=r2.itemid " +
-                            "where r1.ratingDate<r2.ratingDate and r1.stars<=r2.stars and i1.title=i2.title";
+
+    public void OverdueUser()
+    {
+        String sql = "select PersonId,uname,count(*) "
+                + "from Person join Loan on Person.PersonId=Loan.Pid "
+                + "where overdue = true " + "group by personid "
+                + "having count(*)>=2";
         userModel = DefualtUserSearch(sql);
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
-        view.admin.scrollPane.repaint();       
+        view.admin.scrollPane.repaint();
     }
-    public void LPL(){
+
+    public void DoubleRatingUser()
+    {
+        String sql
+                = "select distinct r1.personid,i1.title,i1.author,i1.edition,r1.stars oldRating,r2.stars newRating "
+                + "      from rating r1 join rating r2 on r1.personid=R2.PERSONID"
+                + "           join Item i1 on "
+                + "                     (select distinct title,edition,author from item where itemid=i1.itemid)"
+                + "                     =(select distinct title,edition,author from item where itemid=r1.itemid) "
+                + "    join item i2 on  "
+                + "                     (select distinct title,edition,author from item where itemid=i2.itemid)"
+                + "                     =(select distinct title,edition,author from item where itemid=r2.itemid)"
+                + " where r1.ratingDate<r2.ratingDate and r1.stars<=r2.stars and i1.title=i2.title";
+        userModel = DefualtUserSearch(sql);
+        userModel.fireTableDataChanged();
+        view.admin.setAdminUserTable(userModel);
+        view.admin.scrollPane.repaint();
+    }
+
+    public void LPL()
+    {
         String lib = view.admin.libCB.getSelectedItem().toString();
-        String sql =    "select count(*) " +
-                        "from loan join item on item.itemid=loan.itemid " +
-                        "where libraryBranchID=(select librarybranchid from libraryBranch where branchname=?)";
-        
+        String sql = "select count(*) "
+                + "from loan join item on item.itemid=loan.itemid "
+                + "where libraryBranchID=(select librarybranchid from libraryBranch where branchname=?)";
+
         Connection conn = null;
         PreparedStatement stmt = null;
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1,lib);
+            stmt.setString(1, lib);
             ResultSet rs = stmt.executeQuery();
-                     
+
             userModel = buildTableModel(rs);
-        } catch (SQLException se){
+        } catch (SQLException se)
+        {
             //Handle errors for JDBC
             se.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e)
+        {
             //Handle errors for Class.forName
             e.printStackTrace();
-        } finally{
+        } finally
+        {
             //finally block used to close resources
-            try{
-                if (stmt != null){
+            try
+            {
+                if (stmt != null)
+                {
                     stmt.close();
                 }
-            } catch (SQLException se2){
+            } catch (SQLException se2)
+            {
             }
-            try{
-                if (conn != null){
+            try
+            {
+                if (conn != null)
+                {
                     conn.close();
                 }
-            } catch (SQLException se){
+            } catch (SQLException se)
+            {
                 se.printStackTrace();
             }
-        }    
-        
+        }
+
         userModel.fireTableDataChanged();
         view.admin.setAdminUserTable(userModel);
         view.admin.scrollPane.repaint();
     }
 //  ADMIN MODELS
+
     public DefaultTableModel addUser(String uname, String usertype,
             String prefBranch, String loans)
     {
         Connection conn = null;
         PreparedStatement stmt = null;
 
-        String sql = "insert into person(uname,usertype,preferredbranch,totalLoansMade) values(?,?,?,?)";
+        String sql
+                = "insert into person(uname,usertype,preferredbranch,totalLoansMade) values(?,?,?,?)";
         try
         {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1,uname);
-            stmt.setString(2,usertype);
-            stmt.setInt(3,Integer.parseInt(prefBranch));
-            stmt.setInt(4,Integer.parseInt(loans));
+            stmt.setString(1, uname);
+            stmt.setString(2, usertype);
+            stmt.setInt(3, Integer.parseInt(prefBranch));
+            stmt.setInt(4, Integer.parseInt(loans));
             System.out.println(stmt.toString());
             stmt.executeUpdate();
             ResultSet rs = stmt.executeQuery("SELECT * from person");
@@ -1263,6 +1430,7 @@ public class LibModel
 
         return tableModel;
     }
+
     public static DefaultTableModel buildTableModel(ResultSet rs)
             throws SQLException
     {
@@ -1291,5 +1459,5 @@ public class LibModel
 
         return new DefaultTableModel(data, columnNames);
     }
-    
+
 }
