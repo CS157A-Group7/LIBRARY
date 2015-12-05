@@ -389,7 +389,7 @@ public class LibModel
     {
         String sql = "select title,count(*) total "
                 + "from loan join item on Loan.itemid=Item.itemid "
-                + "where ItemType='BOOK' " + "group by title,standardNumber "
+                + "where ItemType='BOOK' " + "group by title,author,edition "
                 + "order by total desc " + "Limit 5";
         itemModel = DefaultItemSearch(sql);
         itemModel.fireTableDataChanged();
@@ -402,7 +402,7 @@ public class LibModel
 
         String sql = "select title,avg(stars) "
                 + "from rating join item on rating.itemid=Item.itemid "
-                + "where ItemType='Book' " + "group by title,edition,author "
+                + "where ItemType='Book' " + "group by title,author,edition "
                 + "order by avg(stars) desc " + "limit 5";
 
         itemModel = DefaultItemSearch(sql);
