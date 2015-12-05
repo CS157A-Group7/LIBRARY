@@ -1,18 +1,24 @@
 use library;
 
 
--- Give a rating of 5 to all items after a new user "paid" is added to the user list.
+-- If a user's name has been changed to paid guy, add "5" star reviews from that person for all items.
+-- The logic is that if this person has been paid to write good reviews, we just add his/her "5 star" reviews to all books.
 DROP TRIGGER IF EXISTS SuperReviewer;
 delimiter //
 CREATE TRIGGER SuperReviewer
-AFTER INSERT ON person
+AFTER UPDATE ON person
 FOR EACH ROW
 BEGIN
-IF (new.uname= 'PaidGuy') then
-     INSERT Into RATING select current_date(),itemid,new.personid,5  from item;
+IF (new.uname='PaidGuy') then
+     insert into rating(personid,ratingdate,ItemId,stars)
+     select new.personid,current_date(),itemid,5 from item;
      END IF;
 END//
 delimiter ;
+
+--  select * from person join rating using(personid) where personid=8;
+--  update person set uname="PaidGuy" where personid=8;
+-- select * from person join rating using(personid) where PersonId=8;
 
 
 
